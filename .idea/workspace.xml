@@ -11,7 +11,23 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="151f3711-4afb-42fe-9973-b1f44ef0aa2b" name="Default Changelist" comment="" />
+    <list default="true" id="151f3711-4afb-42fe-9973-b1f44ef0aa2b" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/edges_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/nodes_lat_lon_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/nodes_x_y_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t01_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t02_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t03_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t04_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t05_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t06_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t07_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t08_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t09_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t10_tags_portugal.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mapas/Portugal/t11_tags_portugal.txt" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +41,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1bm25Df9oyzgF1X6ePCVP9Jd4q3" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -51,7 +68,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589222763668</updated>
-      <workItem from="1589222767681" duration="1934000" />
+      <workItem from="1589222767681" duration="2479000" />
     </task>
     <servers />
   </component>

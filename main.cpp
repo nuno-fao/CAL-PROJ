@@ -1,11 +1,11 @@
-#include <cstdio>
-#include "graphviewer.h"
-#include <fstream>
 #include <iostream>
-#include <sstream>
+#include "lib/Node.h"
+#include "lib/Graph.h"
+
 
 int main() {
 
-	getchar();
+	Graph<Node> graph;
+
 	return 0;
 }

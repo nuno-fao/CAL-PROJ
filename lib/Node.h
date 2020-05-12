@@ -35,6 +35,13 @@ public:
 
     Node(int id, double xCoord, double yCoord, Type type) : id(id), xCoord(xCoord), yCoord(yCoord), type(type) {}
 
+    Node(int id, double xCoord, double yCoord) : id(id), xCoord(xCoord), yCoord(yCoord) { type=Type::NONE;}
+
+    Node(int id) : id(id) {
+        xCoord=yCoord=0;
+        type=Type::NONE;
+    }
+
 
     int getId() const {
         return id;
@@ -83,5 +90,11 @@ public:
     void setGraphViewerY(int graphViewerY) {
         Node::graphViewerY = graphViewerY;
     }
+
+    bool operator==(const Node &rhs) const {
+        return id == rhs.getId();
+    }
+
+
 
 };

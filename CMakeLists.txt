@@ -16,4 +16,4 @@ add_executable(CAL_Proj
         lib/graphviewer.h
         lib/Graph.h
         lib/MutablePriorityQueue.h
-        main.cpp lib/Node.h)
+        main.cpp lib/Node.h lib/GraphFuncs.h lib/GraphFuncs.cpp)

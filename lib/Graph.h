@@ -34,12 +34,14 @@ class Vertex {
 	bool processing = false;	// auxiliary field
 
 	void addEdge(Vertex<T> *dest, double w);
+    void addEdge(Vertex<T> *dest, double w, bool display);
 
 public:
 	Vertex(T in);
 	T getInfo() const;
 	double getDist() const;
 	Vertex *getPath() const;
+    vector<Edge<T> > getAdj() const;
 
 	bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
 	friend class Graph<T>;
@@ -50,6 +52,11 @@ public:
 template <class T>
 Vertex<T>::Vertex(T in): info(in) {}
 
+template <class T>
+vector<Edge<T> > Vertex<T>::getAdj() const {
+    return adj;
+}
+
 /*
  * Auxiliary function to add an outgoing edge to a vertex (this),
  * with a given destination vertex (d) and edge weight (w).
@@ -58,6 +65,12 @@ template <class T>
 void Vertex<T>::addEdge(Vertex<T> *d, double w) {
 	adj.push_back(Edge<T>(d, w));
 }
+
+template <class T>
+void Vertex<T>::addEdge(Vertex<T> *dest, double w, bool display) {
+    adj.push_back(Edge<T>(dest, w, display));
+}
+
 
 template <class T>
 bool Vertex<T>::operator<(Vertex<T> & vertex) const {
@@ -85,14 +98,19 @@ template <class T>
 class Edge {
 	Vertex<T> * dest;      // destination vertex
 	double weight;         // edge weight
+	bool displayGV;     //needed because we add the same edge twice and should only display 1
 public:
 	Edge(Vertex<T> *d, double w);
+	Edge(Vertex<T> *d, double w, bool disp);
+	bool displayEdge(){return displayGV;}
 	friend class Graph<T>;
 	friend class Vertex<T>;
 };
 
 template <class T>
 Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
+template<class T>
+Edge<T>::Edge(Vertex<T> *d, double w, bool disp): dest(d), weight(w), displayGV(disp) {}
 
 
 /*************************** Graph  **************************/
@@ -105,6 +123,7 @@ public:
 	Vertex<T> *findVertex(const T &in) const;
 	bool addVertex(const T &in);
 	bool addEdge(const T &sourc, const T &dest, double w);
+	bool addEdge(const T &sourc, const T &dest, double w, bool disp);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
 
@@ -166,6 +185,16 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w) {
 		return false;
 	v1->addEdge(v2,w);
 	return true;
+}
+
+template <class T>
+bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, bool shouldDisplay) {
+    auto v1 = findVertex(sourc);
+    auto v2 = findVertex(dest);
+    if (v1 == NULL || v2 == NULL)
+        return false;
+    v1->addEdge(v2,w, shouldDisplay);
+    return true;
 }
 
 

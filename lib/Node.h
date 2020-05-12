@@ -5,7 +5,7 @@
 #ifndef CAL_PROJ_NODE_H
 #define CAL_PROJ_NODE_H
 
-#endif //CAL_PROJ_NODE_H
+
 
 enum Type{
     PARAGEM,
@@ -98,3 +98,5 @@ public:
 
 
 };
+
+#endif //CAL_PROJ_NODE_H

@@ -1,3 +1,0 @@
-C:/Users/olive/Desktop/CAL-PROJ/cmake-build-debug/CMakeFiles/CAL_Proj.dir
-C:/Users/olive/Desktop/CAL-PROJ/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/olive/Desktop/CAL-PROJ/cmake-build-debug/CMakeFiles/rebuild_cache.dir

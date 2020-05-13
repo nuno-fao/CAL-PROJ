@@ -158,10 +158,10 @@ bool loadGraph(Graph<Node> &graph){
                 v->getInfo().setType(INTERSECAO);
 
             else if(line == "recycling_type=container")
-                v->getInfo().setType(POINT);
+                v->getInfo().setType(OBJECTIVE);
 
             else if(line == "recycling_type=centre")
-                v->getInfo().setType(POINT);
+                v->getInfo().setType(OBJECTIVE);
 
             else if(line == "amenity=waste_transfer_station")
                 v->getInfo().setType(PRECOLHA);

@@ -11,7 +11,7 @@ enum Type{
     PARAGEM,
     PRECOLHA,
     INTERSECAO,
-    POINT,
+    OBJECTIVE,
     NONE
 };
 

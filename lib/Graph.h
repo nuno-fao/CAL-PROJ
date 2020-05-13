@@ -102,6 +102,7 @@ class Edge {
 public:
 	Edge(Vertex<T> *d, double w);
 	Edge(Vertex<T> *d, double w, bool disp);
+	Vertex<T>* getDest() {return dest;}
 	bool displayEdge(){return displayGV;}
 	friend class Graph<T>;
 	friend class Vertex<T>;

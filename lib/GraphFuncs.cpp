@@ -14,6 +14,9 @@ using namespace std;
 bool loadGraph(Graph<Node> &graph){
 
     ifstream coordFile, edgeFile, tagFile;
+    int aux;
+
+    //open files for reading
 
     coordFile.open("../mapas/Porto/nodes_x_y_porto.txt");
 
@@ -38,24 +41,23 @@ bool loadGraph(Graph<Node> &graph){
 
     //-------------------------------READ VERTEX----------------------
 
-    int numNodes;
-    coordFile >> numNodes;
+
+    coordFile >> aux;
 
     string line;
 
-    // to clear the newline
-    getline(coordFile, line);
+    getline(coordFile, line);   //clear /n
 
 
     while(getline(coordFile, line)) {
 
-        // gets rid of the parentheses
+        // removes parentheses
         size_t pos = line.find(')');
         if (pos != string::npos)
             line = line.substr(1, pos);
 
-        // gets rid of the commas
-        line.erase(remove(line.begin(), line.end(), ','), line.end());
+
+        line.erase(remove(line.begin(), line.end(), ','), line.end());  //removes ','
 
 
         int id;
@@ -63,87 +65,78 @@ bool loadGraph(Graph<Node> &graph){
         stringstream linestream(line);
         linestream >> id >> x >> y;
 
-
-        // add node to vertex
         graph.addVertex(Node(id, x, y));
     }
 
 
-    if(graph.getVertexSet().size() != numNodes) {
-        cout << "Number of nodes in the graph is wrong! ";
-        cout << graph.getVertexSet().size() << " instead of " << numNodes << "." << endl;
+    if(graph.getVertexSet().size() != aux) {    //vertex num check
+        cout << "Read wrong number of vertex! ";
         return false;
     }
 
 
 
     //------------------------READ EDGES-----------------------------
+    int total=0;
+    double distance;
 
-    int numEdges;
-    edgeFile >> numEdges;
+    edgeFile >> aux;
 
-    // to clear the newline
-    getline(edgeFile, line);
+    getline(edgeFile, line);    //clear /n
 
 
     while(getline(edgeFile, line)) {
 
-        // gets rid of the parentheses
+        // removes parentheses
         size_t pos = line.find(')');
         if (pos != string::npos)
             line = line.substr(1, pos);
 
 
-        // gets rid of the commas
-        line.erase(remove(line.begin(), line.end(), ','), line.end());
+        line.erase(remove(line.begin(), line.end(), ','), line.end());  //removes ','
 
         int id1, id2;
         stringstream lineS(line);
         lineS >> id1 >> id2;
 
-        // gets the two nodes from the graph
-        Vertex<Node>* v1 = graph.findVertex(Node(id1));
-        Vertex<Node>* v2 = graph.findVertex(Node(id2));
+        Vertex<Node>* v1 = graph.findVertex(Node(id1)); //search source vertex
+        Vertex<Node>* v2 = graph.findVertex(Node(id2)); //search dest vertex
 
-        // calculates the distance between the two nodes
-        double distance = getEdgeWeight(v1->getInfo().getXCoord(), v1->getInfo().getYCoord(), v2->getInfo().getXCoord(), v2->getInfo().getYCoord());
+        distance = getEdgeWeight(v1->getInfo().getXCoord(), v1->getInfo().getYCoord(), v2->getInfo().getXCoord(), v2->getInfo().getYCoord());
 
 
-        // adds the edges to the graph
-        graph.addEdge(Node(id1), Node(id2), distance, true);
-        graph.addEdge(Node(id2), Node(id1), distance, false);
+
+        if(!graph.addEdge(Node(id1), Node(id2), distance, true)){
+            cout<<"Failed to add an edge from node "<<id1<<" to "<<id2<<" !!!";
+            return false;
+        }
+        total++;
+        if(!graph.addEdge(Node(id2), Node(id1), distance, false)){
+            cout<<"Failed to add an edge from node "<<id2<<" to "<<id1<<" !!!";
+            return false;
+        }
+        total++;
     }
 
-    int total = 0;
-
-    for(auto v : graph.getVertexSet()) {
-        total += v->getAdj().size();
-    }
-
-    if(total != (numEdges * 2)) {
-        cout << "Number of edges in the graph is wrong! ";
-        cout << total << " instead of " << numEdges * 2 << "." << endl;
+    if(total != (aux * 2)) {    //edge num check
+        cout << "Read wrong number of edges! ";
         return false;
     }
 
     //---------------------READ TAGS-------------------------
 
-
-    int numDifTags;
-    tagFile >> numDifTags;
+    tagFile >> aux;
 
 
-    for(int i = 0; i < numDifTags; i++) {
+    for(int i = 0; i < aux; i++) {
 
-        // extracts tag name
-        tagFile >> line;
+        tagFile >> line;    //tag name
 
-        int numTags;
-        tagFile >> numTags;
+        tagFile >> aux;     //tag nr
 
         int id;
 
-        for(int j = 0; j < numTags; j++) {
+        for(int j = 0; j < aux; j++) {
 
             tagFile >> id;
 

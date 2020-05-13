@@ -11,18 +11,18 @@
 class Vehicle{
 private:
     int id;
-    priority_queue<Vertex<Node>> PRordenados;
+    queue<Edge<Node>> PRordenados;
 public:
     int getId() const;
 
     void setId(int id);
 
-    const priority_queue<Vertex<Node>> &getPRordenados() const;
+    const queue<Edge<Node>> &getPRordenados() const;
 
-    void setPRordenados(const priority_queue<Vertex<Node>> &pRordenados);
+    void setPRordenados(const queue<Edge<Node>> &pRordenados);
 
     Vehicle(int id);
 
-    Vehicle(int id, const priority_queue<Vertex<Node>> &pRordenados);
+    Vehicle(int id, const queue<Edge<Node>> &pRordenados);
 };
 #endif //CAL_PROJ_VEHICLE_H

@@ -184,10 +184,11 @@ double getEdgeWeight(double x1, double y1, double x2, double y2) {
 vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph){
     ifstream cityFile;
     string aux;
+    vector<Vertex<Node>*> outIfFail;
     cityFile.open("../files/porto_info.txt");
     if(!cityFile){
         cout<<"Couldn't open city file! ";
-        return;
+        return outIfFail;
     }
     getline(cityFile,aux);
     Vertex<Node>* garage=graph.findVertex(Node(stoi(aux)));
@@ -210,6 +211,6 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
     for (auto v : graph.getVertexSet())
         v->setVisited(false);
 
-    graph.DepthFirstVisit(garage, visitedVertex);
+    graph.DepthFirstSearch(garage, visitedVertex);
     return visitedVertex;
 }

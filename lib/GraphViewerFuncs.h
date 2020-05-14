@@ -21,6 +21,15 @@
 GraphViewer* displayGraph( Graph<Node>& graph);
 
 /**
+ * Dá display no graphviewer de um grafo que corresponde a um CFC.
+ *
+ * @param graph conjunto de vertices pertencentes ao CFC
+ *
+ * @return nada.
+ */
+void displayGraphConexo( vector<Vertex<Node>*>& graph);
+
+/**
  * Percorre o grafo identificar as coordinadas minimas e maximas .
  *
  * @param xMin coordenadas x minima
@@ -32,5 +41,18 @@ GraphViewer* displayGraph( Graph<Node>& graph);
  * @return Returns 0 successfull, -1 otherwise.
  */
 int getMinMax(double &xMin,double &yMin, double &xMax, double &yMax , Graph<Node>& graph);
+
+/**
+ * Percorre o grafo identificar as coordinadas minimas e maximas desta vez, com um vetor de vertex.
+ *
+ * @param xMin coordenadas x minima
+ * @param yMin coordenadas y minima
+ * @param xMax coordenadas x maxima
+ * @param yMax coordenadas y maxima
+ * @param vec vetor a percorrer
+ *
+ * @return Returns 0 successfull, -1 otherwise.
+ */
+int getMinMaxVector(double &xMin,double &yMin, double &xMax, double &yMax , vector<Vertex<Node>*>& vec);
 
 #endif //CAL_PROJ_GRAPHVIEWERFUNCS_H

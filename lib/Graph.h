@@ -138,7 +138,7 @@ public:
 	vector<Vertex<T> *> getVertexSet() const;
 
 	//Search
-	void DepthFirstVisit(Vertex<T> *v, vector<Vertex<T>* > & accessible) const;
+	void DepthFirstSearch(Vertex<T> *v, vector<Vertex<T>* > & accessible) const;
 
 	// Fp05 - single source
 	void unweightedShortestPath(const T &s);    //TODO...
@@ -154,13 +154,13 @@ public:
 
 
 template <class T>
-void Graph<T>::DepthFirstVisit(Vertex<T> *v, vector<Vertex<T>* > & accessible) const {
+void Graph<T>::DepthFirstSearch(Vertex<T> *v, vector<Vertex<T>* > & accessible) const {
     v->visited = true;
     accessible.push_back(v);
     for (auto & e : v->adj) {
         auto w = e.dest;
         if ( ! w->visited)
-            dfsVisit(w, accessible);
+            DepthFirstSearch(w, accessible);
     }
 }
 

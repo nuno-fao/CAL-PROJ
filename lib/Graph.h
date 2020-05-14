@@ -129,10 +129,10 @@ public:
 	vector<Vertex<T> *> getVertexSet() const;
 
 	// Fp05 - single source
-	void unweightedShortestPath(const T &s);    //TODO...
-	void dijkstraShortestPath(const T &s);      //TODO...
-	void bellmanFordShortestPath(const T &s);   //TODO...
-	vector<T> getPathTo(const T &dest) const;   //TODO...
+	void unweightedShortestPath(const T &s);
+	void dijkstraShortestPath(const T &s);
+	void bellmanFordShortestPath(const T &s);
+	vector<T> getPathTo(const T &dest) const;
 
 	// Fp05 - all pairs
 	void floydWarshallShortestPath();   //TODO...
@@ -278,9 +278,14 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
 
 template<class T>
 vector<T> Graph<T>::getPathTo(const T &dest) const{
-	vector<T> res;
-	// TODO
-	return res;
+    vector<T> res;
+    auto v = findVertex(dest);
+    if(v == nullptr || v->dist == INF)
+        return res;
+    for( ; v != nullptr; v = v->path)
+        res.push_back(v->info);
+    reverse(res.begin(), res.end());
+    return res;
 }
 
 

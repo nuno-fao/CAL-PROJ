@@ -5,6 +5,7 @@
 #define GRAPH_H_
 
 #include <vector>
+#include <iostream>
 #include <queue>
 #include <list>
 #include <limits>
@@ -119,6 +120,8 @@ Edge<T>::Edge(Vertex<T> *d, double w, bool disp): dest(d), weight(w), displayGV(
 template <class T>
 class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
+    double ** W = nullptr; // distance
+    int **P = nullptr; // path
 
 public:
 	Vertex<T> *findVertex(const T &in) const;
@@ -129,14 +132,14 @@ public:
 	vector<Vertex<T> *> getVertexSet() const;
 
 	// Fp05 - single source
-	void unweightedShortestPath(const T &s);
-	void dijkstraShortestPath(const T &s);
-	void bellmanFordShortestPath(const T &s);
+	void unweightedShortestPath(const T &orig);
+	void dijkstraShortestPath(const T &orig);
+	void bellmanFordShortestPath(const T &orig);
 	vector<T> getPathTo(const T &dest) const;
 
 	// Fp05 - all pairs
-	void floydWarshallShortestPath();   //TODO...
-	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;   //TODO...
+	void floydWarshallShortestPath();
+	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
 
 };
 
@@ -292,16 +295,78 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 
 /**************** All Pairs Shortest Path  ***************/
 
+
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
-	// TODO
+    unsigned n = vertexSet.size();
+    if (W != nullptr) {
+        for (int i = 0; i < n; i++)
+            if (W[i] != nullptr)
+                delete [] W[i];
+        delete [] W;
+    }
+    if (P != nullptr) {
+        for (int i = 0; i < n; i++)
+            if (P[i] != nullptr)
+                delete [] P[i];
+        delete [] P;
+    }
+    W = new double *[n];
+    P = new int *[n];
+    for (unsigned i = 0; i < n; i++) {
+        W[i] = new double[n];
+        P[i] = new int[n];
+        for (unsigned j = 0; j < n; j++) {
+            W[i][j] = i == j? 0 : INF;
+            P[i][j] = -1;
+        }
+        for (auto e : vertexSet[i]->adj) {
+            for (unsigned k = 0; k < vertexSet.size(); k++)
+                if (vertexSet[k]->info == e.dest->info){
+                    unsigned int l = k;
+                    W[i][l] = e.weight;
+                    P[i][l] = i;
+                }
+        }
+        for(unsigned k = 0; k < n ; k++)
+            for(unsigned i = 0; i < n; i++)
+                for(unsigned j = 0; j < n; j++){
+                    if(W[i][k] == INF || W[k][j] == INF)
+                        continue;
+                    int val = W[i][k] + W[k][j];
+                    if(val < W[i][j]){
+                        W[i][j] = val;
+                        P[i][j] = P[k][j];
+
+                    }
+                }
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                std::cout << P[i][j] << " ";
+                if(j == n - 1)
+                    std::cout << endl;
+            }
+        }
+    }
+
 }
 
 template<class T>
 vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 	vector<T> res;
-	// TODO
-	return res;
+	unsigned i = 0;
+	unsigned j = 0;
+    for (unsigned k = 0; k < vertexSet.size(); k++)
+        if (vertexSet[k]->info == orig)
+            i = k;
+    for (unsigned l = 0; l < vertexSet.size(); l++)
+        if (vertexSet[l]->info == dest)
+            j = l;
+    if (i == -1 || j == -1 || W[i][j] == INF) return res;
+    for ( ; j != -1; j = P[i][j])
+        res.push_back(vertexSet[j]->info);
+    reverse(res.begin(), res.end());
+    return res;
 }
 
 

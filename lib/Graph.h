@@ -36,12 +36,16 @@ class Vertex {
 	void addEdge(Vertex<T> *dest, double w);
     void addEdge(Vertex<T> *dest, double w, bool display);
 
+
 public:
 	Vertex(T in);
 	T getInfo() const;
 	double getDist() const;
 	Vertex *getPath() const;
+	bool getVisited(){return visited;}
+	void setVisited(bool v){visited=v;}
     vector<Edge<T> > getAdj() const;
+    void removeEdge(int i);
 
 	bool operator<(Vertex<T> & vertex) const; // // required by MutablePriorityQueue
 	friend class Graph<T>;
@@ -71,6 +75,10 @@ void Vertex<T>::addEdge(Vertex<T> *dest, double w, bool display) {
     adj.push_back(Edge<T>(dest, w, display));
 }
 
+template <class T>
+void Vertex<T>::removeEdge(int i) {
+    adj.erase(adj.begin() + i);
+}
 
 template <class T>
 bool Vertex<T>::operator<(Vertex<T> & vertex) const {
@@ -104,6 +112,7 @@ public:
 	Edge(Vertex<T> *d, double w, bool disp);
 	Vertex<T>* getDest() {return dest;}
 	bool displayEdge(){return displayGV;}
+	double getWeight(){return weight;}
 	friend class Graph<T>;
 	friend class Vertex<T>;
 };
@@ -128,6 +137,9 @@ public:
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
 
+	//Search
+	void DepthFirstVisit(Vertex<T> *v, vector<Vertex<T>* > & accessible) const;
+
 	// Fp05 - single source
 	void unweightedShortestPath(const T &s);    //TODO...
 	void dijkstraShortestPath(const T &s);      //TODO...
@@ -139,6 +151,18 @@ public:
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;   //TODO...
 
 };
+
+
+template <class T>
+void Graph<T>::DepthFirstVisit(Vertex<T> *v, vector<Vertex<T>* > & accessible) const {
+    v->visited = true;
+    accessible.push_back(v);
+    for (auto & e : v->adj) {
+        auto w = e.dest;
+        if ( ! w->visited)
+            dfsVisit(w, accessible);
+    }
+}
 
 template <class T>
 int Graph<T>::getNumVertex() const {

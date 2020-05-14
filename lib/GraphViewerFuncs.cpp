@@ -35,6 +35,9 @@ GraphViewer* displayGraph( Graph<Node>& graph){
         auxY = h - auxY;
 
         gv->addNode(i->getInfo().getId(), auxX, auxY);
+        if(i->getInfo().getType()==Type::GARAGEM){
+            gv->setVertexColor(i->getInfo().getId(),"BLUE");
+        }
     }
 
 
@@ -58,8 +61,8 @@ GraphViewer* displayGraph( Graph<Node>& graph){
 
 int getMinMax(double &xMin,double &yMin, double &xMax, double &yMax , Graph<Node>& graph){
 
-    xMin=yMin=0;
-    xMax=yMax=DBL_MAX;
+    xMin=yMin=DBL_MAX;
+    xMax=yMax=0;
     double auxX, auxY;
 
     for(auto i : graph.getVertexSet()) {

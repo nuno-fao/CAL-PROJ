@@ -152,16 +152,16 @@ bool loadGraph(Graph<Node> &graph){
                 v->getInfo().setType(PARAGEM);
 
             else if(line == "bin=*")
-                v->getInfo().setType(INTERSECAO);
+                v->getInfo().setType(NONE);
 
             else if(line == "landuse=landfill")
-                v->getInfo().setType(INTERSECAO);
+                v->getInfo().setType(NONE);
 
             else if(line == "recycling_type=container")
-                v->getInfo().setType(OBJECTIVE);
+                v->getInfo().setType(FACTORY);
 
             else if(line == "recycling_type=centre")
-                v->getInfo().setType(OBJECTIVE);
+                v->getInfo().setType(FACTORY);
 
             else if(line == "amenity=waste_transfer_station")
                 v->getInfo().setType(PRECOLHA);
@@ -179,4 +179,37 @@ bool loadGraph(Graph<Node> &graph){
 double getEdgeWeight(double x1, double y1, double x2, double y2) {
 
     return sqrt(pow(x2 - x1,2)  + pow(y2 - y1,2) );
+}
+
+vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph){
+    ifstream cityFile;
+    string aux;
+    cityFile.open("../files/porto_info.txt");
+    if(!cityFile){
+        cout<<"Couldn't open city file! ";
+        return;
+    }
+    getline(cityFile,aux);
+    Vertex<Node>* garage=graph.findVertex(Node(stoi(aux)));
+    garage->getInfo().setType(Type::GARAGEM);
+    return cleanEdgesNVertex(graph,garage);
+}
+
+vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage){
+    vector<Vertex<Node>*> visitedVertex;
+    //---------------------CLEAN USELESS EDGES---------------------
+    for(auto v : graph.getVertexSet()) {
+        for (int i = 0; i < v->getAdj().size(); i++) {
+            if (v->getAdj().at(i).getWeight() <= 0) {
+                v->removeEdge(i);
+                i--;
+            }
+        }
+    }
+    //----------------------REMOVE VERTEX NOT ACCESSIBLE FROM GARAGE---------------
+    for (auto v : graph.getVertexSet())
+        v->setVisited(false);
+
+    graph.DepthFirstVisit(garage, visitedVertex);
+    return visitedVertex;
 }

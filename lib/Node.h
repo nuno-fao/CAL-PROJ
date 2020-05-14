@@ -10,8 +10,8 @@
 enum Type{
     PARAGEM,
     PRECOLHA,
-    INTERSECAO,
-    OBJECTIVE,
+    GARAGEM,
+    FACTORY,
     NONE
 };
 

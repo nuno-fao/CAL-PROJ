@@ -203,19 +203,76 @@ bool Graph<T>::addEdge(const T &sourc, const T &dest, double w, bool shouldDispl
 
 template<class T>
 void Graph<T>::unweightedShortestPath(const T &orig) {
-	// TODO
+    queue<Vertex<T> *> q;
+    for (auto v : vertexSet) {
+        v->dist = INF;
+        v->path = nullptr;
+    }
+    auto s = findVertex(orig);
+    s->dist = 0;
+
+    q.push(s);
+    while (!q.empty()) {
+        auto v = q.front();
+        q.pop();
+        for (auto e : v->adj)
+            if (v->dist + 1 < e.dest->dist) {
+                e.dest->dist = v->dist + 1;
+                e.dest->path = v;
+                q.push(e.dest);
+            }
+    }
 }
 
 
 template<class T>
 void Graph<T>::dijkstraShortestPath(const T &origin) {
-	// TODO
+    MutablePriorityQueue<Vertex<T> > q;
+    for (auto v : vertexSet) {
+        v->dist = INF;
+        v->path = nullptr;
+    }
+    auto s = findVertex(origin);
+    s->dist = 0;
+
+    q.insert(s);
+    while(!q.empty()){
+        auto v = q.extractMin();
+        for(auto e : v->adj){
+            auto oldDist = e.dest->dist;
+            if (v->dist + e.weight < e.dest->dist) {
+                e.dest->dist = v->dist + e.weight;
+                e.dest->path = v;
+                if(oldDist == INF) q.insert(e.dest);
+            }
+        }
+    }
 }
 
 
 template<class T>
 void Graph<T>::bellmanFordShortestPath(const T &orig) {
-	// TODO
+    for (auto v : vertexSet) {
+        v->dist = INF;
+        v->path = nullptr;
+    }
+    auto s = findVertex(orig);
+    s->dist = 0;
+
+    for(unsigned i = 1; i < vertexSet.size(); i++)
+        for(auto v : vertexSet)
+            for(auto e : v->adj)
+                if (v->dist + e.weight < e.dest->dist) {
+                    e.dest->dist = v->dist + e.weight;
+                    e.dest->path = v;
+                }
+            for(auto v : vertexSet)
+                for(auto e : v->adj)
+                    if (v->dist + e.weight < e.dest->dist) {
+                        e.dest->dist = v->dist + e.weight;
+                        e.dest->path = v;
+
+                    }
 }
 
 

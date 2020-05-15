@@ -13,11 +13,11 @@
 /**
  * Funcao que le de um ficheiro para um grafo
  *
- * @param graph referencia do objeto para onde se vai ler
+ * @param city string que indica qual cidade a ler
  *
- * @return true if successfull, false otherwise.
+ * @return grafo carregado.
  */
-bool loadGraph(Graph<Node> &graph);
+Graph<Node> loadGraph( string city);
 
 /**
  * Função que calcula a distancia entre os dois nodes que a edge vai ligar.
@@ -44,10 +44,11 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
  * Função que marca a garagem no grafo
  *
  * @param graph grafo a processar
+ * @param city string que indica qual cidade a ler
  *
  * @return Vetor com os vertices accessiveis a partir da garagem.
  */
-vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph);
+vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph, string city);
 
 
 

@@ -11,38 +11,43 @@ int main() {
 	Graph<Node> graph;
     GraphViewer* gv;
     vector<Vertex<Node>*> conexo;
+    int aux;
+    string city;
 
 	int option;
     cout << "HELLO, WHAT DO YOU WANT TO DO?" << endl << endl;
-    while ((option=mainMenu())!=5){
+    while ((option=mainMenu())!=4){
         switch(option){
             case 0:
-                cout<<"Reading graph file...\n";
-                if(!loadGraph(graph)){
-                    cout<<"failed to read graph\n";
+                aux=chooseCity(city);
+                if(aux<0){
+                    break;
                 }
                 else{
-                    cout<<"Done!\n";
+
                 }
+                cout<<"Reading graph file...\n";
+                graph = loadGraph(city);
+                cout<<"Done!\n\n";
+                cout<<"Processing important data...\n";
+                conexo = readFromCityFile(graph,city);
+                if(conexo.empty()){
+                    cout<<"failed to create CFC\n";
+                    break;
+                }
+                cout<<"Done!\n";
                 break;
             case 1:
-
-                break;
-            case 2:
                 cout<<"Displaying full graph!\n";
                 displayGraph(graph);
                 break;
-            case 3:
-                cout<<"Reading data from files...\n";
-                conexo = readFromCityFile(graph);
-                cout<<"Done!\n";
+            case 2:
                 cout<<"Displaying accessible nodes!\n";
                 displayGraphConexo(conexo);
                 break;
-            case 4:
+            case 3:
 
                 break;
-
         }
     }
 	return 0;

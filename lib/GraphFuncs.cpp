@@ -11,25 +11,27 @@
 
 using namespace std;
 
-bool loadGraph(Graph<Node> &graph){
-
+Graph<Node> loadGraph( string city){
+    Graph<Node> graph;
     ifstream coordFile, edgeFile;
     int aux;
+    string auxString;
 
     //open files for reading
-
-    coordFile.open("../mapas/Porto/nodes_x_y_porto.txt");
+    auxString="../mapas/"+city+"/nodes_x_y_"+city+".txt";
+    coordFile.open(auxString);
 
     if(!coordFile) {
         cout << "Couldn't open coordinates file!" << endl;
-        return false;
+        return graph;
     }
 
-    edgeFile.open("../mapas/Porto/edges_porto.txt");
+    auxString="../mapas/"+city+"/edges_"+city+".txt";
+    edgeFile.open(auxString);
 
     if(!edgeFile) {
         cout << "Couldn't open edge file!" << endl;
-        return false;
+        return graph;
     }
 
     //-------------------------------READ VERTEX----------------------
@@ -64,7 +66,7 @@ bool loadGraph(Graph<Node> &graph){
 
     if(graph.getVertexSet().size() != aux) {    //vertex num check
         cout << "Read wrong number of vertex! ";
-        return false;
+        return graph;
     }
 
 
@@ -101,22 +103,22 @@ bool loadGraph(Graph<Node> &graph){
 
         if(!graph.addEdge(Node(id1), Node(id2), distance, true)){
             cout<<"Failed to add an edge from node "<<id1<<" to "<<id2<<" !!!";
-            return false;
+            return graph;
         }
         total++;
         if(!graph.addEdge(Node(id2), Node(id1), distance, false)){
             cout<<"Failed to add an edge from node "<<id2<<" to "<<id1<<" !!!";
-            return false;
+            return graph;
         }
         total++;
     }
 
     if(total != (aux * 2)) {    //edge num check
         cout << "Read wrong number of edges! ";
-        return false;
+        return graph;
     }
 
-    return true;
+    return graph;
 }
 
 double getEdgeWeight(double x1, double y1, double x2, double y2) {
@@ -124,11 +126,12 @@ double getEdgeWeight(double x1, double y1, double x2, double y2) {
     return sqrt(pow(x2 - x1,2)  + pow(y2 - y1,2) );
 }
 
-vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph){
+vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph,string city){
     ifstream cityFile;
     string aux;
     vector<Vertex<Node>*> outIfFail;
-    cityFile.open("../files/porto_info.txt");
+    aux="../files/"+city+"/"+city+"_info.txt";
+    cityFile.open(aux);
     if(!cityFile){
         cout<<"Couldn't open city file! ";
         return outIfFail;

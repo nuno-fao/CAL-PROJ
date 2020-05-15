@@ -13,7 +13,7 @@ using namespace std;
 
 bool loadGraph(Graph<Node> &graph){
 
-    ifstream coordFile, edgeFile, tagFile;
+    ifstream coordFile, edgeFile;
     int aux;
 
     //open files for reading
@@ -29,13 +29,6 @@ bool loadGraph(Graph<Node> &graph){
 
     if(!edgeFile) {
         cout << "Couldn't open edge file!" << endl;
-        return false;
-    }
-
-    tagFile.open("../mapas/Porto/t02_tags_porto.txt");
-
-    if(!tagFile) {
-        cout << "Couldn't open tags file!" << endl;
         return false;
     }
 
@@ -121,56 +114,6 @@ bool loadGraph(Graph<Node> &graph){
     if(total != (aux * 2)) {    //edge num check
         cout << "Read wrong number of edges! ";
         return false;
-    }
-
-    //---------------------READ TAGS-------------------------
-
-    tagFile >> aux;
-
-
-    for(int i = 0; i < aux; i++) {
-
-        tagFile >> line;    //tag name
-
-        tagFile >> aux;     //tag nr
-
-        int id;
-
-        for(int j = 0; j < aux; j++) {
-
-            tagFile >> id;
-
-            Vertex<Node>* v = graph.findVertex(Node(id));
-
-            if(line == "amenity=waste_basket")
-                v->getInfo().setType(PARAGEM);
-
-            else if(line == "amenity=recycling")
-                v->getInfo().setType(PARAGEM);
-
-            else if(line == "amenity=waste_disposal")
-                v->getInfo().setType(PARAGEM);
-
-            else if(line == "bin=*")
-                v->getInfo().setType(NONE);
-
-            else if(line == "landuse=landfill")
-                v->getInfo().setType(NONE);
-
-            else if(line == "recycling_type=container")
-                v->getInfo().setType(FACTORY);
-
-            else if(line == "recycling_type=centre")
-                v->getInfo().setType(FACTORY);
-
-            else if(line == "amenity=waste_transfer_station")
-                v->getInfo().setType(PRECOLHA);
-
-            else if(line == "waste=*")
-                v->getInfo().setType(PRECOLHA);
-
-        }
-
     }
 
     return true;

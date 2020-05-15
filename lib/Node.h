@@ -8,7 +8,6 @@
 
 
 enum Type{
-    PARAGEM,
     PRECOLHA,
     GARAGEM,
     FACTORY,

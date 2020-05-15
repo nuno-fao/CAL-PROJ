@@ -14,7 +14,7 @@ int mainMenu(){
         cout << endl;
         cout << "[0] Load a graph and generate its table" << endl;
         cout << "[1] Read vehicle file" << endl;
-        cout << "[2] Display graph" << endl;
+        cout << "[2] Display full graph" << endl;
         cout << "[3] Display accesible nodes from the garage" << endl;
         cout << "[4] Read service file, calculate and display vehicle paths" << endl;
         cout << "[5] Exit program" << endl;

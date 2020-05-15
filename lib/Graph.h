@@ -190,8 +190,8 @@ public:
 	void unweightedShortestPath(const T &orig);
 	void dijkstraShortestPath(const T &orig);
 	void bellmanFordShortestPath(const T &orig);
-	void dijkstraPathTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
-	void floydWarshallPathTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
+	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
+	void floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
 	vector<T> getPathTo(const T &dest) const;
 
 	// Fp05 - all pairs
@@ -439,7 +439,7 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 }
 
 template<class T>
-void Graph<T>::dijkstraPathTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
+void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
     for(auto k : accessNodes) {
         for (auto v : vertexSet) {
             v->dist = INF;
@@ -472,7 +472,7 @@ void Graph<T>::dijkstraPathTable(vector<Vertex<T>* > accessNodes, unordered_map<
 }
 
 template<class T>
-void Graph<T>::floydWarshallPathTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
+void Graph<T>::floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
     for (auto i : accessNodes) {
         for (auto j : accessNodes) {
             double value;

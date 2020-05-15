@@ -62,6 +62,7 @@ Graph<Node> loadGraph( string city){
         linestream >> id >> x >> y;
 
         graph.addVertex(Node(id, x, y));
+
     }
 
 
@@ -168,22 +169,22 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
     do {
 
         cout << "What algorithm should be used?" << endl;
-        cout << "1 -> Dijkstra" << endl;
-        cout << "2 -> Floyd-Warshall" << endl;
+        cout << "0 -> Dijkstra" << endl;
+        cout << "1 -> Floyd-Warshall" << endl;
         cout << "Option: ";
         cin >> i;
 
 
-        if(i > 2 || i == 0)
+        if(i > 1)
             cout << endl << endl << "Invalid option! Try again." << endl << endl;
 
-    } while(i > 2 || i == 0);
+    } while(i > 1);
 
-    if(i == 1) {
-            graph.dijkstraPathTable(accessNodes,table);
+    if(i == 0) {
+            graph.dijkstraTable(accessNodes,table);
     }
     else {
-        graph.floydWarshallPathTable(accessNodes,table);
+        graph.floydWarshallTable(accessNodes,table);
     }
 
     return table;

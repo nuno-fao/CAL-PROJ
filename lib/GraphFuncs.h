@@ -50,6 +50,15 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
  */
 vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph, string city);
 
+/**
+ * Função que guarda a informação num unordered map
+ *
+ * @param accessNodes nodes a processar
+ * @param graph grafo a processar
+ *
+ * @return Vetor com os vertices accessiveis a partir da garagem.
+ */
+
 unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph);
 
 

@@ -18,4 +18,4 @@ add_executable(CAL_PROJ
         lib/graphviewer.h
         lib/MutablePriorityQueue.h
         lib/Node.h
-        main.cpp lib/GraphViewerFuncs.h lib/GraphViewerFuncs.cpp lib/Vehicle.h lib/Vehicle.cpp lib/Service.h lib/Service.cpp lib/Controller.h lib/Controller.cpp lib/Menus.h lib/Menus.cpp)
+        main.cpp lib/GraphViewerFuncs.h lib/GraphViewerFuncs.cpp lib/Vehicle.h lib/Vehicle.cpp lib/Service.h lib/Service.cpp lib/Menus.h lib/Menus.cpp)

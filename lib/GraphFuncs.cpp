@@ -160,3 +160,72 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
     graph.DepthFirstSearch(garage, visitedVertex);
     return visitedVertex;
 }
+
+vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city){
+
+    string aux;
+    ifstream serviceFile;
+    vector<int> notFound;
+    int id, total=0;
+    bool found=false;
+
+    do {
+        cout << "Insert the target service file name (no need for the directory and sufix but MUST be .txt): " << endl;
+        cin >> aux;
+        aux="../files/"+city+"/"+aux+".txt";
+        serviceFile.open(aux);
+        if(!serviceFile)
+            cout << "Couldn't open file! Please insert another one." << endl;
+
+    } while(!serviceFile);
+
+    int idFactory;
+    serviceFile >> idFactory;
+    getline(serviceFile, aux);
+
+    int nrPR;
+    serviceFile >> nrPR;
+    getline(serviceFile, aux);
+
+
+    while(getline(serviceFile, aux)) {
+
+        id = stoi(aux);
+
+        for(auto i: graph){
+            if(i->getInfo().getId()==id){
+                Node newInfo = i->getInfo();
+                newInfo.setType(Type::PRECOLHA);
+                i->setInfo(newInfo);
+                found=true;
+                break;
+            }
+        }
+
+        if(!found){
+            notFound.push_back(id);
+        }
+        else{
+            found=false;
+        }
+        total++;
+    }
+
+    for(auto i: graph){
+        if(i->getInfo().getId()==idFactory){
+            i->getInfo().setType(Type::FACTORY);
+            break;
+        }
+    }
+
+    if(total != nrPR)
+        cout << "Not counting unaccessible nodes, it wasn't possible to read all nodes, please check file integrity!\n";
+
+    if(!notFound.empty()){
+        cout<<"There were "<<notFound.size()<<" id's not accessible from the garage or that simply don't exist in this map.\nThose were:\n";
+        for(auto i : notFound){
+            cout<<"("<<i<<");\t";
+        }
+    }
+    return graph;
+}

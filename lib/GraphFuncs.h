@@ -41,7 +41,7 @@ double getEdgeWeight(double x1,double y1, double x2, double y2);
 vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
 
 /**
- * Função que marca a garagem no grafo
+ * Função que marca a garagem no grafo e utilizando cleanEdgesNVertex retorna o grafo acessivel a partir da mesma
  *
  * @param graph grafo a processar
  * @param city string que indica qual cidade a ler
@@ -49,6 +49,16 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
  * @return Vetor com os vertices accessiveis a partir da garagem.
  */
 vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph, string city);
+
+/**
+ * Função que marca a garagem no grafo
+ *
+ * @param graph grafo contendo apenas nodes acessiveis
+ * @param city string que indica em qual cidade estamos a trabalhar
+ *
+ * @return Uma cópia do grafo passado como argumento mas com os pontos de recolha devidamente marcados
+ */
+vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city);
 
 
 

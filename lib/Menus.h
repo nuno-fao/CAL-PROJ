@@ -6,6 +6,8 @@
 #define CAL_PROJ_MENUS_H
 
 #include <string>
+#include "Node.h"
+#include "Graph.h"
 
 using namespace std;
 
@@ -24,5 +26,14 @@ int mainMenu();
  * @return 0 se o utilizador escolheu alguma cidade, -1 se cancelou
  */
 int chooseCity(string& city);
+
+/**
+ * Menu que apresenta o id de todos os nodes accessiveis a partir da garagem
+ *
+ * @param accessible vetor com todos os nodes relevantes
+ *
+ * @return nothing
+ */
+void help(vector<Vertex<Node>*> accessible);
 
 #endif //CAL_PROJ_MENUS_H

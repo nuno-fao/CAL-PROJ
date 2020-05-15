@@ -16,15 +16,12 @@ int main() {
 
 	int option;
     cout << "HELLO, WHAT DO YOU WANT TO DO?" << endl << endl;
-    while ((option=mainMenu())!=4){
+    while ((option=mainMenu())!=5){
         switch(option){
             case 0:
                 aux=chooseCity(city);
                 if(aux<0){
                     break;
-                }
-                else{
-
                 }
                 cout<<"Reading graph file...\n";
                 graph = loadGraph(city);
@@ -46,6 +43,12 @@ int main() {
                 displayGraphConexo(conexo);
                 break;
             case 3:
+                help(conexo);
+                break;
+            case 4:
+                cout<<"Reading service...\n";
+                vector<Vertex<Node>*> servico = readService(conexo,city);
+                cout<<"Done!\n";
 
                 break;
         }

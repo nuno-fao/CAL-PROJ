@@ -37,10 +37,10 @@ class Vertex {
 	void addEdge(Vertex<T> *dest, double w);
     void addEdge(Vertex<T> *dest, double w, bool display);
 
-
 public:
 	Vertex(T in);
 	T getInfo() const;
+	void setInfo(T newinfo);
 	double getDist() const;
 	Vertex *getPath() const;
 	bool getVisited(){return visited;}
@@ -53,7 +53,8 @@ public:
 	friend class MutablePriorityQueue<Vertex<T>>;
 };
 
-
+template<class T>
+void Vertex<T>::setInfo(T newinfo){info=newinfo;}
 template <class T>
 Vertex<T>::Vertex(T in): info(in) {}
 

@@ -145,7 +145,5 @@ void displayGraphConexo( vector<Vertex<Node>*>& graph){
 
     gv->rearrange();
 
-    return;
-
 
 }

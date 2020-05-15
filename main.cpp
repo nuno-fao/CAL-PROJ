@@ -12,7 +12,9 @@ int main() {
 	    cout<<"failed to read graph\n";
 	}
     readFromCityFile(graph);
-	GraphViewer* gv = displayGraph(graph);
+	//GraphViewer* gv = displayGraph(graph);
+	vector<Vertex<Node>*> conexo = readFromCityFile(graph);
+	displayGraphConexo(conexo);
 	getchar();
 	return 0;
 }

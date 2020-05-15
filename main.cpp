@@ -14,7 +14,7 @@ int main() {
     readFromCityFile(graph);
 	//GraphViewer* gv = displayGraph(graph);
 	vector<Vertex<Node>*> conexo = readFromCityFile(graph);
-	displayGraphConexo(conexo);
+	//displayGraphConexo(conexo);
 	getchar();
 	return 0;
 }

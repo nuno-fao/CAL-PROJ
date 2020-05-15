@@ -31,6 +31,26 @@ bool loadGraph(Graph<Node> &graph);
  */
 double getEdgeWeight(double x1,double y1, double x2, double y2);
 
+/**
+ * Função que limpa todas as arestas inuteis e consequentemente os vertex inacessiveis
+ *
+ * @param graph grafo a processar
+ *
+ * @return Vetor com os vertices accessiveis a partir da garagem.
+ */
+vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
+
+/**
+ * Função que marca a garagem no grafo
+ *
+ * @param graph grafo a processar
+ *
+ * @return Vetor com os vertices accessiveis a partir da garagem.
+ */
+vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph);
+
+
+
 
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

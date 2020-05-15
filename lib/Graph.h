@@ -11,6 +11,9 @@
 #include <limits>
 #include <cmath>
 #include "MutablePriorityQueue.h"
+#include <unordered_map>
+
+#include "Node.h"
 
 using namespace std;
 
@@ -19,6 +22,9 @@ template <class T> class Graph;
 template <class T> class Vertex;
 
 #define INF std::numeric_limits<double>::max()
+
+
+
 
 /************************* Vertex  **************************/
 
@@ -124,6 +130,43 @@ Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
 template<class T>
 Edge<T>::Edge(Vertex<T> *d, double w, bool disp): dest(d), weight(w), displayGV(disp) {}
 
+/****************** VertexPair *************************/
+struct VertexPair {
+
+    Vertex<Node>* first;
+    Vertex<Node>* second;
+
+    VertexPair(Vertex<Node>* first, Vertex<Node>* second) {
+        this->first = first;
+        this->second = second;
+    }
+    bool operator==(const VertexPair &other) const {
+        return ((first == other.first)
+                && (second == other.second));
+    }
+};
+
+namespace std {
+
+    template<>
+    struct hash<Vertex<Node> > {
+        size_t operator()(Vertex<Node>*& n) const {
+
+            return ((hash<double>()(n->getInfo().getXCoord())
+                     ^ (hash<double>()(n->getInfo().getYCoord()) << 1)) >> 1)
+                   ^ (hash<int>()(n->getInfo().getId()) << 1);
+        }
+    };
+    template<>
+    struct hash<VertexPair> {
+
+        size_t operator()(const VertexPair &k) const {
+
+            return ((hash<Vertex<Node>*>()(k.first))
+                    ^ (hash<Vertex<Node>*>()(k.second)) << 1);
+        }
+    };
+}
 
 /*************************** Graph  **************************/
 
@@ -148,6 +191,8 @@ public:
 	void unweightedShortestPath(const T &orig);
 	void dijkstraShortestPath(const T &orig);
 	void bellmanFordShortestPath(const T &orig);
+	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
+	void floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
 	vector<T> getPathTo(const T &dest) const;
 
 	// Fp05 - all pairs
@@ -393,6 +438,72 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
     reverse(res.begin(), res.end());
     return res;
 }
+
+template<class T>
+void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
+    for(auto k : accessNodes) {
+        for (auto v : vertexSet) {
+            v->dist = INF;
+            v->path = nullptr;
+        }
+        auto s = findVertex(k->getInfo());
+        s->dist = 0;
+        MutablePriorityQueue<Vertex<T> > q;
+        q.insert(s);
+        while (!q.empty()) {
+
+            auto v = q.extractMin();
+
+            if (v != s) {
+                table.insert(make_pair(VertexPair(s, v), v->getDist()));
+            }
+            for (auto e : v->adj) {
+
+                auto oldDist = e.dest->dist;
+                if (v->dist + e.weight < e.dest->dist) {
+                    e.dest->dist = v->dist + e.weight;
+                    e.dest->path = v;
+                    if (oldDist == INF)
+                        q.insert(e.dest);
+                }
+
+            }
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
+    for (auto i : accessNodes) {
+        for (auto j : accessNodes) {
+            double value;
+            if (i == j)
+                value = 0;
+            else value = INF;
+
+            table.insert(make_pair(VertexPair(i, j), value));
+        }
+        for (auto e : i->getAdj()) {
+            table[VertexPair(i, e.getDest())] = e.getWeight();
+        }
+    }
+
+    for (auto k : accessNodes) {
+        for (auto j : accessNodes) {
+            if (k != j) {
+                for (auto i : accessNodes) {
+                    if (table.at(VertexPair(i, k)) == INF || table.at(VertexPair(k, j)) == INF) continue;
+                    double val = table.at(VertexPair(i, k)) + table.at(VertexPair(k, j));
+                    if (val < table.at(VertexPair(i, j)))
+                        table[VertexPair(i, j)] = val;
+                }
+            }
+        }
+    }
+}
+
+
+
 
 
 #endif /* GRAPH_H_ */

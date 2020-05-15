@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "GraphFuncs.h"
 
+
 using namespace std;
 
 Graph<Node> loadGraph( string city){
@@ -61,6 +62,7 @@ Graph<Node> loadGraph( string city){
         linestream >> id >> x >> y;
 
         graph.addVertex(Node(id, x, y));
+
     }
 
 
@@ -161,23 +163,24 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
     return visitedVertex;
 }
 
-vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city){
+
+vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
 
     string aux;
     ifstream serviceFile;
     vector<int> notFound;
-    int id, total=0;
-    bool found=false;
+    int id, total = 0;
+    bool found = false;
 
     do {
         cout << "Insert the target service file name (no need for the directory and sufix but MUST be .txt): " << endl;
         cin >> aux;
-        aux="../files/"+city+"/"+aux+".txt";
+        aux = "../files/" + city + "/" + aux + ".txt";
         serviceFile.open(aux);
-        if(!serviceFile)
+        if (!serviceFile)
             cout << "Couldn't open file! Please insert another one." << endl;
 
-    } while(!serviceFile);
+    } while (!serviceFile);
 
     int idFactory;
     serviceFile >> idFactory;
@@ -188,44 +191,72 @@ vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city){
     getline(serviceFile, aux);
 
 
-    while(getline(serviceFile, aux)) {
+    while (getline(serviceFile, aux)) {
 
         id = stoi(aux);
 
-        for(auto i: graph){
-            if(i->getInfo().getId()==id){
+        for (auto i: graph) {
+            if (i->getInfo().getId() == id) {
                 Node newInfo = i->getInfo();
                 newInfo.setType(Type::PRECOLHA);
                 i->setInfo(newInfo);
-                found=true;
+                found = true;
                 break;
             }
         }
 
-        if(!found){
+        if (!found) {
             notFound.push_back(id);
-        }
-        else{
-            found=false;
+        } else {
+            found = false;
         }
         total++;
     }
 
-    for(auto i: graph){
-        if(i->getInfo().getId()==idFactory){
+    for (auto i: graph) {
+        if (i->getInfo().getId() == idFactory) {
             i->getInfo().setType(Type::FACTORY);
             break;
         }
     }
 
-    if(total != nrPR)
+    if (total != nrPR)
         cout << "Not counting unaccessible nodes, it wasn't possible to read all nodes, please check file integrity!\n";
 
-    if(!notFound.empty()){
-        cout<<"There were "<<notFound.size()<<" id's not accessible from the garage or that simply don't exist in this map.\nThose were:\n";
-        for(auto i : notFound){
-            cout<<"("<<i<<");\t";
+    if (!notFound.empty()) {
+        cout << "There were " << notFound.size()
+             << " id's not accessible from the garage or that simply don't exist in this map.\nThose were:\n";
+        for (auto i : notFound) {
+            cout << "(" << i << ");\t";
         }
     }
     return graph;
+}
+
+unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph){
+    unordered_map<VertexPair, double> table;
+    unsigned int i;
+    do {
+
+        cout << "What algorithm should be used?" << endl;
+        cout << "0 -> Dijkstra" << endl;
+        cout << "1 -> Floyd-Warshall" << endl;
+        cout << "Option: ";
+        cin >> i;
+
+
+        if(i > 1)
+            cout << endl << endl << "Invalid option! Try again." << endl << endl;
+
+    } while(i > 1);
+
+    if(i == 0) {
+            graph.dijkstraTable(accessNodes,table);
+    }
+    else {
+        graph.floydWarshallTable(accessNodes,table);
+    }
+
+    return table;
+
 }

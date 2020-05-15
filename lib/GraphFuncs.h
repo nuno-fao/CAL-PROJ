@@ -6,9 +6,9 @@
 #define CAL_PROJ_GRAPHFUNCS_H
 
 
-
 #include "Graph.h"
 #include "Node.h"
+
 
 /**
  * Funcao que le de um ficheiro para um grafo
@@ -50,7 +50,7 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph,Vertex<Node>* garage);
  */
 vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph, string city);
 
-
+unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph);
 
 
 #endif //CAL_PROJ_GRAPHFUNCS_H

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include "GraphFuncs.h"
 
+
 using namespace std;
 
 Graph<Node> loadGraph( string city){
@@ -159,4 +160,31 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
 
     graph.DepthFirstSearch(garage, visitedVertex);
     return visitedVertex;
+}
+
+unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph){
+    unordered_map<VertexPair, double> table;
+    unsigned int i;
+    do {
+
+        cout << "What algorithm should be used?" << endl;
+        cout << "1 -> Dijkstra" << endl;
+        cout << "2 -> Floyd-Warshall" << endl;
+        cout << "Option: ";
+        cin >> i;
+
+
+        if(i > 2 || i == 0)
+            cout << endl << endl << "Invalid option! Try again." << endl << endl;
+
+    } while(i > 2 || i == 0);
+
+    if(i == 1) {
+            graph.dijkstraPathTable(accessNodes,table);
+    }
+    else {
+        graph.floydWarshallPathTable(accessNodes,table);
+    }
+
+    return table;
 }

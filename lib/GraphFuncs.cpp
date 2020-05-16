@@ -250,8 +250,9 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
 
     } while(i > 1);
 
-    if(i == 0) {
-            graph.dijkstraTable(accessNodes,table);
+    for(auto v : accessNodes)
+        if(i == 0) {
+            graph.dijkstraTable(accessNodes,table, v->getInfo());
     }
     else {
         graph.floydWarshallTable(accessNodes,table);

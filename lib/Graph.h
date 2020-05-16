@@ -191,7 +191,7 @@ public:
 	void unweightedShortestPath(const T &orig);
 	void dijkstraShortestPath(const T &orig);
 	void bellmanFordShortestPath(const T &orig);
-	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
+	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table, const T &source);
 	void floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
 	vector<T> getPathTo(const T &dest) const;
 
@@ -440,18 +440,17 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
 }
 
 template<class T>
-void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
-    for(auto k : accessNodes) {
-        for (auto v : vertexSet) {
+void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table, const T &source) {
+        MutablePriorityQueue<Vertex<T> > q;
+        for (auto v : accessNodes) {
             v->dist = INF;
             v->path = nullptr;
+
         }
-        auto s = findVertex(k->getInfo());
+        auto s = findVertex(source);
         s->dist = 0;
-        MutablePriorityQueue<Vertex<T> > q;
         q.insert(s);
         while (!q.empty()) {
-
             auto v = q.extractMin();
 
             if (v != s) {
@@ -470,7 +469,6 @@ void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<Vert
             }
         }
     }
-}
 
 template<class T>
 void Graph<T>::floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {

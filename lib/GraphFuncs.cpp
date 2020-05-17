@@ -290,3 +290,33 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
     return table;
 
 }
+
+vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph){
+    vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
+    vector<Node> path = graph.getPath(service.getGaragem()->getInfo(), service.getDestino()->getInfo(), pontosrecolha);
+    Vertex<Node> * temp;
+    vector<Vertex<Node> *> vpontos;
+    for (auto i: path) {
+        temp->setInfo(i);
+        vpontos.push_back(temp);
+    }
+    Vertex<Node> * prev = service.getGaragem();
+    vector<Edge<Node> *> res;
+    for (auto i: vpontos){
+        for (auto j: prev->getAdj()){
+            if (j.getDest() == i)
+            {
+                res.push_back(&j);
+            }
+        }
+    }
+        return res;
+
+}
+
+void proccessService(Service service, Vehicle &vehicle, Graph<Node> graph){
+    vehicle.setPRordenados(orderEdges(service, graph));
+    service.setVehicle(vehicle);
+}
+
+

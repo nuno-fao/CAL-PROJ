@@ -292,26 +292,26 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
 }
 
 vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph){
-    vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
-    vector<Node> path = graph.getPath(service.getGaragem()->getInfo(), service.getDestino()->getInfo(), pontosrecolha);
-    Vertex<Node> * temp;
-    vector<Vertex<Node> *> vpontos;
-    for (auto i: path) {
-        temp->setInfo(i);
-        vpontos.push_back(temp);
-    }
-    Vertex<Node> * prev = service.getGaragem();
     vector<Edge<Node> *> res;
-    for (auto i: vpontos){
-        for (auto j: prev->getAdj()){
-            if (j.getDest() == i)
-            {
+    vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
+    pontosrecolha.push_back(service.getDestino());
+    graph.dijkstraShortestPath(service.getGaragem()->getInfo());
+    //vector<Node> path = graph.getPathTo(service.getDestino()->getInfo());
+    /*vector<Vertex<Node> *> vpontos;
+    for (auto i: path) {
+        for (auto j: pontosrecolha){
+            if (i == j->getInfo()) vpontos.push_back(j);
+        }
+    }*/
+    for (int i = 0; i < pontosrecolha.size()-1; i++) {
+        Vertex<Node> *prev = pontosrecolha[i];
+        for (auto j: prev->getAdj()) {
+            if (j.getDest() == pontosrecolha[i + 1]) {
                 res.push_back(&j);
             }
         }
     }
         return res;
-
 }
 
 void proccessService(Service service, Vehicle &vehicle, Graph<Node> graph){

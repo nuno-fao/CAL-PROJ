@@ -10,6 +10,7 @@
 #include <list>
 #include <limits>
 #include <cmath>
+#include <algorithm>
 #include "MutablePriorityQueue.h"
 #include <unordered_map>
 
@@ -189,12 +190,12 @@ public:
 
 	// Fp05 - single source
 	void unweightedShortestPath(const T &orig);
-	void dijkstraShortestPath(const T &orig, vector<Vertex<T> *> accessNodes);
+	void dijkstraShortestPath(const T &orig);
 	void bellmanFordShortestPath(const T &orig);
 	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table, const T &source);
 	void floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
 	vector<T> getPathTo(const T &dest) const;
-    vector<T> getPath(const T &origin, const T &dest, vector<Vertex<T> *> accessNodes);
+    vector<T> getPath(const T &origin, const T &dest);
 
 	// Fp05 - all pairs
 	void floydWarshallShortestPath();
@@ -300,9 +301,9 @@ void Graph<T>::unweightedShortestPath(const T &orig) {
 
 
 template<class T>
-void Graph<T>::dijkstraShortestPath(const T &origin, vector<Vertex<T> *> accessNodes) {
+void Graph<T>::dijkstraShortestPath(const T &origin) {
     MutablePriorityQueue<Vertex<T> > q;
-    for (auto v : accessNodes) {
+    for (auto v : vertexSet) {
         v->dist = INF;
         v->path = nullptr;
     }
@@ -363,8 +364,8 @@ vector<T> Graph<T>::getPathTo(const T &dest) const{
 }
 
 template<class T>
-vector<T> Graph<T>::getPath(const T &origin, const T &dest, vector<Vertex<T> *> accessNodes) {
-    dijkstraShortestPath(origin, accessNodes);
+vector<T> Graph<T>::getPath(const T &origin, const T &dest) {
+    dijkstraShortestPath(origin);
 
     list<T> buffer;
     Vertex<T>* v = findVertex(dest);

@@ -8,6 +8,7 @@
 
 #include "Graph.h"
 #include "Node.h"
+#include "Service.h"
 
 
 /**
@@ -59,7 +60,7 @@ vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph, string city);
  *
  * @return Uma cópia do grafo passado como argumento mas com os pontos de recolha devidamente marcados
  */
-vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city);
+Service readService(vector<Vertex<Node>*> graph, string city);
 
 /**
  * Função que guarda a informação num unordered map

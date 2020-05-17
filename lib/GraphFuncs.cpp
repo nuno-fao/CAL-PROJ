@@ -164,11 +164,15 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
 }
 
 
-vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
+Service readService(vector<Vertex<Node>*> graph, string city) {
 
     string aux;
     ifstream serviceFile;
     vector<int> notFound;
+    vector<Vertex<Node>*> pRecolha;
+    Vertex<Node>* garage;
+    Vertex<Node>* factory;
+
     int id, total = 0;
     bool found = false;
 
@@ -182,9 +186,13 @@ vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
 
     } while (!serviceFile);
 
+    //------------------FACTORY VERTEX ID-----------------------
+
     int idFactory;
     serviceFile >> idFactory;
     getline(serviceFile, aux);
+
+    //------------------TOTAL NUMBER OF NODES-----------------------
 
     int nrPR;
     serviceFile >> nrPR;
@@ -196,10 +204,11 @@ vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
         id = stoi(aux);
 
         for (auto i: graph) {
-            if (i->getInfo().getId() == id) {
+            if (i->getInfo().getId() == id && i->getInfo().getType()!=Type::GARAGEM) {
                 Node newInfo = i->getInfo();
                 newInfo.setType(Type::PRECOLHA);
                 i->setInfo(newInfo);
+                pRecolha.push_back(i);
                 found = true;
                 break;
             }
@@ -213,15 +222,29 @@ vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
         total++;
     }
 
+    //------------------SET FACTORY & GARAGE------------------
+    bool foundGarage, foundFac;
+    foundGarage=foundFac=false;
     for (auto i: graph) {
-        if (i->getInfo().getId() == idFactory) {
+        if (i->getInfo().getId() == idFactory && i->getInfo().getType()!=Type::GARAGEM) {
             i->getInfo().setType(Type::FACTORY);
-            break;
+            factory=i;
+            foundFac=true;
         }
+        else if(i->getInfo().getType()==Type::GARAGEM){
+            garage=i;
+            foundGarage=true;
+        }
+        if(foundGarage&&foundFac){break;}
     }
+
+
+    //------------------CHECK NODES READ-----------------------
 
     if (total != nrPR)
         cout << "Not counting unaccessible nodes, it wasn't possible to read all nodes, please check file integrity!\n";
+
+    //------------------OUTPUT THE ID'S THAT COULD NOT BE READ----------------------
 
     if (!notFound.empty()) {
         cout << "There were " << notFound.size()
@@ -230,7 +253,9 @@ vector<Vertex<Node>*> readService(vector<Vertex<Node>*> graph, string city) {
             cout << "(" << i << ");\t";
         }
     }
-    return graph;
+
+    Service service(1,garage,factory,pRecolha);
+    return service;
 }
 
 unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph){
@@ -241,14 +266,18 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
         cout << "What algorithm should be used?" << endl;
         cout << "0 -> Dijkstra" << endl;
         cout << "1 -> Floyd-Warshall" << endl;
+        cout << "Pro Tip: If the number of edges is about the same as the number of vertex, Dijkstra is recommended but there are way more edges than vertex, Floyd-Warshall is" << endl;
         cout << "Option: ";
         cin >> i;
+
 
 
         if(i > 1)
             cout << endl << endl << "Invalid option! Try again." << endl << endl;
 
     } while(i > 1);
+
+    cout << "\n Working, this may take a while depending on CFC size.\n";
 
     for(auto v : accessNodes)
         if(i == 0) {

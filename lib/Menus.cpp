@@ -97,7 +97,9 @@ int chooseCity(string& city){
 void help(vector<Vertex<Node>*> accessible){
     cout<<"Here all accessible nodes:"<<endl<<endl;
     for(auto i : accessible){
-        cout<<"("<<i->getInfo().getId()<<");\t";
+        if(i->getInfo().getType()!=Type::GARAGEM){
+            cout<<"("<<i->getInfo().getId()<<");\t";
+        }
     }
     cout<<endl<<endl;
 

@@ -10,23 +10,10 @@
 #include "Vehicle.h"
 
 class Service{
-private:
-    int id;
-    Vertex<Node>* garagem;
-    Vertex<Node>* destino;
-    vector<Vertex<Node>> pontosRecolha;
-    Vehicle vehicle;
 public:
-    const Vehicle &getVehicle() const;
+    Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino);
 
-    void setVehicle(const Vehicle &vehicle);
-
-    Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const vector<Vertex<Node>> &pontosRecolha);
-
-    Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const Vehicle &vehicle);
-
-    Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const vector<Vertex<Node>> &pontosRecolha,
-            const Vehicle &vehicle);
+    Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const vector<Vertex<Node>*> & pontosRecolha);
 
     int getId() const;
 
@@ -40,10 +27,19 @@ public:
 
     void setDestino(Vertex<Node> *destino);
 
-    const vector<Vertex<Node>> &getPontosRecolha() const;
+    const vector<Vertex<Node>*> & getPontosRecolha() const;
 
-    void setPontosRecolha(const vector<Vertex<Node>> &pontosRecolha);
+    void setPontosRecolha(const vector<Vertex<Node>*> & pontosRecolha);
 
+    const Vehicle &getVehicle() const;
 
+    void setVehicle(const Vehicle &vehicle);
+
+private:
+    int id;
+    Vertex<Node>* garagem;
+    Vertex<Node>* destino;
+    vector<Vertex<Node>*> pontosRecolha;
+    Vehicle vehicle;
 };
 #endif //CAL_PROJ_SERVICE_H

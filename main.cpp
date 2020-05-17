@@ -11,6 +11,7 @@ int main() {
 	Graph<Node> graph;
     GraphViewer* gv;
     vector<Vertex<Node>*> conexo;
+    unordered_map<VertexPair, double> table;
     int aux;
     string city;
 
@@ -26,12 +27,15 @@ int main() {
                 cout<<"Reading graph file...\n";
                 graph = loadGraph(city);
                 cout<<"Done!\n\n";
-                cout<<"Processing important data...\n";
+                cout<<"Generating CFC...\n";
                 conexo = readFromCityFile(graph,city);
                 if(conexo.empty()){
                     cout<<"failed to create CFC\n";
                     break;
                 }
+                cout<<"Done!\n\n";
+                cout<<"Generating table...\n";
+                table = makeTable(conexo,graph);
                 cout<<"Done!\n";
                 break;
             case 1:
@@ -47,7 +51,7 @@ int main() {
                 break;
             case 4:
                 cout<<"Reading service...\n";
-                vector<Vertex<Node>*> servico = readService(conexo,city);
+                Service servico = readService(conexo,city);
                 cout<<"Done!\n";
 
                 break;

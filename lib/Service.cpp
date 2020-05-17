@@ -28,11 +28,12 @@ void Service::setDestino(Vertex<Node> *destino) {
     Service::destino = destino;
 }
 
-const vector<Vertex<Node>> &Service::getPontosRecolha() const {
-    return pontosRecolha;
+const vector<Vertex<Node>*> & Service::getPontosRecolha() const{
+return
+pontosRecolha;
 }
 
-void Service::setPontosRecolha(const vector<Vertex<Node>> &pontosRecolha) {
+void Service::setPontosRecolha(const vector<Vertex<Node>*> & pontosRecolha) {
     Service::pontosRecolha = pontosRecolha;
 }
 
@@ -44,11 +45,8 @@ void Service::setVehicle(const Vehicle &vehicle) {
     Service::vehicle = vehicle;
 }
 
-Service::Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const Vehicle &vehicle) : id(id),
-                                                                                                 garagem(garagem),
-                                                                                                 destino(destino),
-                                                                                                 vehicle(vehicle) {}
+Service::Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino) : id(id), garagem(garagem), destino(destino) {}
 
-Service::Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const vector<Vertex<Node>> &pontosRecolha,
-                 const Vehicle &vehicle) : id(id), garagem(garagem), destino(destino), pontosRecolha(pontosRecolha),
-                                           vehicle(vehicle) {}
+Service::Service(int id, Vertex<Node> *garagem, Vertex<Node> *destino, const vector<Vertex<Node>*> & pontosRecolha) : id(
+        id), garagem(garagem), destino(destino), pontosRecolha(pontosRecolha) {}
+

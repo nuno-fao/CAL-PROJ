@@ -9,20 +9,22 @@
 #include "Graph.h"
 
 class Vehicle{
-private:
-    int id;
-    queue<Edge<Node>> PRordenados;
 public:
+    Vehicle(){}
+
+    Vehicle(int id, const vector<Edge<Node>*> & pRordenados);
+
     int getId() const;
 
     void setId(int id);
 
-    const queue<Edge<Node>> &getPRordenados() const;
+    const vector<Edge<Node>*> & getPRordenados() const;
 
-    void setPRordenados(const queue<Edge<Node>> &pRordenados);
+    void setPRordenados(const vector<Edge<Node>*> & pRordenados);
 
-    Vehicle(int id);
+private:
+    int id;
+    vector<Edge<Node>*> PRordenados;
 
-    Vehicle(int id, const queue<Edge<Node>> &pRordenados);
 };
 #endif //CAL_PROJ_VEHICLE_H

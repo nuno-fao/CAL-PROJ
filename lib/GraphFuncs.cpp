@@ -295,18 +295,17 @@ vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph){
     vector<Edge<Node> *> res;
     vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
     pontosrecolha.push_back(service.getDestino());
-    graph.dijkstraShortestPath(service.getGaragem()->getInfo());
-    //vector<Node> path = graph.getPathTo(service.getDestino()->getInfo());
-    /*vector<Vertex<Node> *> vpontos;
+    vector<Node> path = graph.getPathTo(service.getDestino()->getInfo());
+    vector<Vertex<Node> *> vpontos;
     for (auto i: path) {
         for (auto j: pontosrecolha){
             if (i == j->getInfo()) vpontos.push_back(j);
         }
-    }*/
-    for (int i = 0; i < pontosrecolha.size()-1; i++) {
-        Vertex<Node> *prev = pontosrecolha[i];
+    }
+    for (int i = 0; i < vpontos.size()-1; i++) {
+        Vertex<Node> *prev = vpontos[i];
         for (auto j: prev->getAdj()) {
-            if (j.getDest() == pontosrecolha[i + 1]) {
+            if (j.getDest() == vpontos[i + 1]) {
                 res.push_back(&j);
             }
         }

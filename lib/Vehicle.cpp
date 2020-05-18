@@ -13,15 +13,15 @@ void Vehicle::setId(int id) {
     Vehicle::id = id;
 }
 
-const vector<Edge<Node>*> & Vehicle::getPRordenados() const{
+const vector<Edge<Node>> & Vehicle::getPRordenados() const{
 return
 PRordenados;
 }
 
-void Vehicle::setPRordenados(const vector<Edge<Node>*> & pRordenados) {
+void Vehicle::setPRordenados(const vector<Edge<Node>> & pRordenados) {
     PRordenados = pRordenados;
 }
 
-Vehicle::Vehicle(int id, const vector<Edge<Node>*> & pRordenados) : id(id), PRordenados(pRordenados) {}
+Vehicle::Vehicle(int id, const vector<Edge<Node>> & pRordenados) : id(id), PRordenados(pRordenados) {}
 
 Vehicle::Vehicle(int id) : id(id) {}

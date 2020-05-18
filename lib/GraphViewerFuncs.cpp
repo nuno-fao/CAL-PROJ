@@ -159,7 +159,7 @@ void displayService(Service service){
     double auxX, auxY;
     int auxID =1;
     for(auto i:service.getVehicle().getPRordenados()){
-        Node node = i->getDest()->getInfo();
+        Node node = i.getDest()->getInfo();
         auxX = node.getXCoord();
         auxY = node.getYCoord();
         if(auxX < xMin){xMin = auxX;}
@@ -189,7 +189,7 @@ void displayService(Service service){
     gv->defineEdgeColor("GREEN");
     gv->defineVertexColor("LIGHT_GREY");
     gv->defineEdgeCurved(true);
-    gv->defineVertexSize(5);
+    gv->defineVertexSize(10);
 
     //------------------ADD GARAGE & FACTORY----------------
 
@@ -199,7 +199,7 @@ void displayService(Service service){
 
     gv->addNode(service.getGaragem()->getInfo().getId(), auxX, auxY);
     gv->setVertexColor(service.getGaragem()->getInfo().getId(),"GREEN");
-    gv->setVertexSize(service.getGaragem()->getInfo().getId(),15);
+    gv->setVertexSize(service.getGaragem()->getInfo().getId(),30);
     gv->setVertexLabel(service.getGaragem()->getInfo().getId(),"GARAGEM");
 
     auxX = ( service.getDestino()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
@@ -208,8 +208,8 @@ void displayService(Service service){
 
     gv->addNode(service.getDestino()->getInfo().getId(), auxX, auxY);
     gv->setVertexColor(service.getDestino()->getInfo().getId(),"RED");
-    gv->setVertexSize(service.getDestino()->getInfo().getId(),15);
-    gv->setVertexLabel(service.getGaragem()->getInfo().getId(),"FACTORY");
+    gv->setVertexSize(service.getDestino()->getInfo().getId(),30);
+    gv->setVertexLabel(service.getDestino()->getInfo().getId(),"FACTORY");
 
 
     //----------------ADD REST OF THE PATH----------------------------
@@ -217,20 +217,25 @@ void displayService(Service service){
     origem=service.getGaragem();
 
     for(auto i: service.getVehicle().getPRordenados()){
-        auxX = ( i->getDest()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
-        auxY = ( i->getDest()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
+        auxX = ( i.getDest()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
+        auxY = ( i.getDest()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
         auxY = h - auxY;
-        gv->addNode(i->getDest()->getInfo().getId(),(int)auxX,(int)auxY);
-        gv->addEdge(auxID,origem->getInfo().getId(),i->getDest()->getInfo().getId(),EdgeType::UNDIRECTED);
-        origem=i->getDest();
+        gv->addNode(i.getDest()->getInfo().getId(),(int)auxX,(int)auxY);
+        gv->addEdge(auxID,origem->getInfo().getId(),i.getDest()->getInfo().getId(),EdgeType::UNDIRECTED);
+        gv->setEdgeThickness(auxID,2);
+        origem=i.getDest();
         auxID++;
     }
 
     //------------------MAKE PR CLEARER----------------------------
+    int auxPRID=1;
+    string auxString;
     for(auto i: service.getPontosRecolha()){
-        gv->setVertexSize(i->getInfo().getId(),15);
-        gv->setVertexLabel(i->getInfo().getId(),"PR");
+        auxString="PR"+to_string(auxPRID);
+        gv->setVertexSize(i->getInfo().getId(),30);
+        gv->setVertexLabel(i->getInfo().getId(),auxString);
         gv->setVertexColor(i->getInfo().getId(),"BLUE");
+        auxPRID++;
     }
 
     gv->rearrange();

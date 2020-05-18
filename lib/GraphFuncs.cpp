@@ -229,7 +229,9 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     foundGarage=foundFac=false;
     for (auto i: graph) {
         if (i->getInfo().getId() == idFactory && i->getInfo().getType()!=Type::GARAGEM) {
-            i->getInfo().setType(Type::FACTORY);
+            Node node = i->getInfo();
+            node.setType(Type::FACTORY);
+            i->setInfo(node);
             factory = i;
             foundFac=true;
         }

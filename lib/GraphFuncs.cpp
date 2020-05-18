@@ -295,26 +295,33 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
 
 }
 
-vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph){
+vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph) {
     vector<Edge<Node> *> res;
     vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
-    pontosrecolha.push_back(service.getDestino());
-    vector<Node> path = graph.getPathTo(service.getDestino()->getInfo());
+    vector<Node> path;
     vector<Vertex<Node> *> vpontos;
+    vpontos.insert(vpontos.begin(), service.getGaragem());
+    vpontos.push_back(service.getDestino());
+    for (int i = 0; i < pontosrecolha.size() - 1; i++) {
+        for (auto i: graph.getPath(pontosrecolha[i]->getInfo(), pontosrecolha[i + 1]->getInfo())) path.push_back(i);
+    }
+
     for (auto i: path) {
-        for (auto j: pontosrecolha){
+        for (auto j: graph.getVertexSet()){
             if (i == j->getInfo()) vpontos.push_back(j);
         }
     }
-    for (int i = 0; i < vpontos.size()-1; i++) {
-        Vertex<Node> *prev = vpontos[i];
-        for (auto j: prev->getAdj()) {
-            if (j.getDest() == vpontos[i + 1]) {
+
+    for (int i = 1; i < vpontos.size(); i++) {
+        Vertex<Node> * prev = vpontos[i - 1];
+        for (auto j: prev->getAdj()){
+            if (j.getDest() == vpontos[i]) {
                 res.push_back(&j);
+
             }
-        }
     }
-        return res;
+    }
+    return res;
 }
 
 void proccessService(Service &service, Graph<Node> graph){

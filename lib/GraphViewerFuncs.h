@@ -8,6 +8,7 @@
 #include "graphviewer.h"
 #include "Node.h"
 #include "Graph.h"
+#include "Service.h"
 #include <cfloat>
 
 /**
@@ -55,4 +56,12 @@ int getMinMax(double &xMin,double &yMin, double &xMax, double &yMax , Graph<Node
  */
 int getMinMaxVector(double &xMin,double &yMin, double &xMax, double &yMax , vector<Vertex<Node>*>& vec);
 
+/**
+ * Dá display no graphviewerdo trajeto para realizar um serviço.
+ *
+ * @param service serviço a processar
+ *
+ * @return nada.
+ */
+void displayService(Service service);
 #endif //CAL_PROJ_GRAPHVIEWERFUNCS_H

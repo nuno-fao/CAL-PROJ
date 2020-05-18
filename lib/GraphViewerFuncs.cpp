@@ -25,6 +25,7 @@ GraphViewer* displayGraph( Graph<Node>& graph){
     gv->createWindow(w,h);
     gv->defineEdgeColor("BLACK");
     gv->defineVertexColor("LIGHT_GRAY");
+    gv->defineEdgeCurved(true);
 
     //--------------------ADDING VERTEX--------------------
 
@@ -34,7 +35,7 @@ GraphViewer* displayGraph( Graph<Node>& graph){
         auxY = ( i->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
         auxY = h - auxY;
 
-        gv->addNode(i->getInfo().getId(), auxX, auxY);
+        gv->addNode(i->getInfo().getId(), (int)auxX, (int)auxY);
         if(i->getInfo().getType()==Type::GARAGEM){
             gv->setVertexColor(i->getInfo().getId(),"BLUE");
         }
@@ -118,6 +119,8 @@ void displayGraphConexo( vector<Vertex<Node>*>& graph){
     gv->createWindow(w,h);
     gv->defineEdgeColor("BLACK");
     gv->defineVertexColor("LIGHT_GRAY");
+    gv->defineEdgeCurved(true);
+    gv->defineVertexSize(10);
 
     for(auto i : graph) {
 
@@ -125,11 +128,11 @@ void displayGraphConexo( vector<Vertex<Node>*>& graph){
         auxY = ( i->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
         auxY = h - auxY;
 
-        i->getInfo().setGraphViewerX((int) auxX);
-        i->getInfo().setGraphViewerY((int) auxY);
-        gv->addNode(i->getInfo().getId(), auxX, auxY);
+        gv->addNode(i->getInfo().getId(), (int)auxX, (int)auxY);
         if(i->getInfo().getType()==Type::GARAGEM){
             gv->setVertexColor(i->getInfo().getId(),"BLUE");
+            gv->setVertexLabel(i->getInfo().getId(),"GARAGEM");
+            gv->setVertexSize(i->getInfo().getId(),30);
         }
     }
 
@@ -137,6 +140,7 @@ void displayGraphConexo( vector<Vertex<Node>*>& graph){
         for(auto j: i->getAdj()){
             if(j.displayEdge()) {
                 gv->addEdge(auxID, i->getInfo().getId(), j.getDest()->getInfo().getId(), EdgeType::UNDIRECTED);
+                gv->setEdgeThickness(auxID,2);
                 auxID++;
             }
         }
@@ -144,6 +148,91 @@ void displayGraphConexo( vector<Vertex<Node>*>& graph){
 
 
     gv->rearrange();
+}
 
+void displayService(Service service){
+    int h, w;
+    h=w=750;
+    double xMin,yMin,xMax,yMax;
+    xMin=yMin=DBL_MAX;
+    xMax=yMax=0;
+    double auxX, auxY;
+    int auxID =1;
+    for(auto i:service.getVehicle().getPRordenados()){
+        Node node = i->getDest()->getInfo();
+        auxX = node.getXCoord();
+        auxY = node.getYCoord();
+        if(auxX < xMin){xMin = auxX;}
+        if(auxY < yMin){yMin = auxY;}
+        if(auxX > xMax){xMax = auxX;}
+        if(auxY > yMax){yMax = auxY;}
+    }
+    if(service.getGaragem()->getInfo().getXCoord()<xMin){xMin=service.getGaragem()->getInfo().getXCoord();}
+    if(service.getGaragem()->getInfo().getYCoord()<yMin){yMin=service.getGaragem()->getInfo().getYCoord();}
+    if(service.getGaragem()->getInfo().getXCoord()>xMax){xMax=service.getGaragem()->getInfo().getXCoord();}
+    if(service.getGaragem()->getInfo().getYCoord()>yMax){yMax=service.getGaragem()->getInfo().getYCoord();}
+    if(service.getDestino()->getInfo().getXCoord()<xMin){xMin=service.getDestino()->getInfo().getXCoord();}
+    if(service.getDestino()->getInfo().getYCoord()<yMin){yMin=service.getDestino()->getInfo().getYCoord();}
+    if(service.getDestino()->getInfo().getXCoord()>xMax){xMax=service.getDestino()->getInfo().getXCoord();}
+    if(service.getDestino()->getInfo().getYCoord()>yMax){yMax=service.getDestino()->getInfo().getYCoord();}
+
+    //----------------SET WIDTH------------
+
+    w = (int) ((xMax-xMin)*h/(yMax-yMin));
+
+
+
+    //------------------CREATE GRAPH------------
+
+    GraphViewer* gv = new GraphViewer(w,h,false);
+    gv->createWindow(w,h);
+    gv->defineEdgeColor("GREEN");
+    gv->defineVertexColor("LIGHT_GREY");
+    gv->defineEdgeCurved(true);
+    gv->defineVertexSize(5);
+
+    //------------------ADD GARAGE & FACTORY----------------
+
+    auxX = ( service.getGaragem()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
+    auxY = ( service.getGaragem()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
+    auxY = h - auxY;
+
+    gv->addNode(service.getGaragem()->getInfo().getId(), auxX, auxY);
+    gv->setVertexColor(service.getGaragem()->getInfo().getId(),"GREEN");
+    gv->setVertexSize(service.getGaragem()->getInfo().getId(),15);
+    gv->setVertexLabel(service.getGaragem()->getInfo().getId(),"GARAGEM");
+
+    auxX = ( service.getDestino()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
+    auxY = ( service.getDestino()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
+    auxY = h - auxY;
+
+    gv->addNode(service.getDestino()->getInfo().getId(), auxX, auxY);
+    gv->setVertexColor(service.getDestino()->getInfo().getId(),"RED");
+    gv->setVertexSize(service.getDestino()->getInfo().getId(),15);
+    gv->setVertexLabel(service.getGaragem()->getInfo().getId(),"FACTORY");
+
+
+    //----------------ADD REST OF THE PATH----------------------------
+    Vertex<Node>* origem;
+    origem=service.getGaragem();
+
+    for(auto i: service.getVehicle().getPRordenados()){
+        auxX = ( i->getDest()->getInfo().getXCoord() - xMin ) * w / (xMax-xMin) ;
+        auxY = ( i->getDest()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
+        auxY = h - auxY;
+        gv->addNode(i->getDest()->getInfo().getId(),(int)auxX,(int)auxY);
+        gv->addEdge(auxID,origem->getInfo().getId(),i->getDest()->getInfo().getId(),EdgeType::UNDIRECTED);
+        origem=i->getDest();
+        auxID++;
+    }
+
+    //------------------MAKE PR CLEARER----------------------------
+    for(auto i: service.getPontosRecolha()){
+        gv->setVertexSize(i->getInfo().getId(),15);
+        gv->setVertexLabel(i->getInfo().getId(),"PR");
+        gv->setVertexColor(i->getInfo().getId(),"BLUE");
+    }
+
+    gv->rearrange();
 
 }

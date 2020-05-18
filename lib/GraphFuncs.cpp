@@ -319,7 +319,7 @@ vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph) {
                 res.push_back(&j);
 
             }
-    }
+        }
     }
     return res;
 }

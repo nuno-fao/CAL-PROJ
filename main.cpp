@@ -56,6 +56,8 @@ int main() {
                 cout<<"Calculating service...\n";
                 proccessService(servico,graph);
                 cout<<"Done!\n";
+                cout<<"Displaying service...\n";
+                displayService(servico);
                 break;
         }
     }

@@ -325,6 +325,8 @@ void Graph<T>::dijkstraShortestPath(const T &origin) {
 }
 
 
+
+
 template<class T>
 void Graph<T>::bellmanFordShortestPath(const T &orig) {
     for (auto v : vertexSet) {
@@ -390,7 +392,6 @@ vector<T> Graph<T>::getPath(const T &origin, const T &dest) {
 
 /**************** All Pairs Shortest Path  ***************/
 
-
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
     unsigned n = vertexSet.size();
@@ -416,34 +417,35 @@ void Graph<T>::floydWarshallShortestPath() {
             P[i][j] = -1;
         }
         for (auto e : vertexSet[i]->adj) {
-            for (unsigned k = 0; k < vertexSet.size(); k++)
-                if (vertexSet[k]->info == e.dest->info){
-                    unsigned int l = k;
-                    W[i][l] = e.weight;
-                    P[i][l] = i;
+            for (unsigned i = 0; i < vertexSet.size(); i++)
+                if (vertexSet[i]->info == e.dest->info) {
+                    int j = i;
+                    W[i][j] = e.weight;
+                    P[i][j] = i;
                 }
-        }
-        for(unsigned k = 0; k < n ; k++)
-            for(unsigned i = 0; i < n; i++)
-                for(unsigned j = 0; j < n; j++){
-                    if(W[i][k] == INF || W[k][j] == INF)
-                        continue;
-                    int val = W[i][k] + W[k][j];
-                    if(val < W[i][j]){
-                        W[i][j] = val;
-                        P[i][j] = P[k][j];
 
-                    }
-                }
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                std::cout << P[i][j] << " ";
-                if(j == n - 1)
-                    std::cout << endl;
-            }
         }
     }
+    for(unsigned k = 0; k < n ; k++)
+        for(unsigned i = 0; i < n; i++)
+            for(unsigned j = 0; j < n; j++){
+                if(W[i][k] == INF || W[k][j] == INF)
+                    continue;
+                int val = W[i][k] + W[k][j];
+                if(val < W[i][j]){
+                    W[i][j] = val;
+                    P[i][j] = P[k][j];
 
+                }
+            }
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            cout << P[i][j] << " ";
+            if(j == n - 1)
+                cout << endl;
+        }
+    }
 }
 
 template<class T>

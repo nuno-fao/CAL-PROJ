@@ -262,6 +262,35 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     return service;
 }
 
+void calculatePath(vector<Vertex<Node> *> accessNodes, Graph<Node> graph) {
+    unsigned int i;
+    do {
+
+        cout << "What algorithm should be used?" << endl;
+        cout << "0 -> Dijkstra" << endl;
+        cout << "1 -> Floyd-Warshall" << endl;
+        cout
+                << "Pro Tip: If the number of edges is about the same as the number of vertex, Dijkstra is recommended but there are way more edges than vertex, Floyd-Warshall is"
+                << endl;
+        cout << "Option: ";
+        cin >> i;
+
+        if (i > 1)
+            cout << endl << endl << "Invalid option! Try again." << endl << endl;
+
+    } while (i > 1);
+
+    cout << "\n Working, this may take a while depending on CFC size.\n";
+
+    for (auto v : accessNodes)
+        if (i == 0) {
+            graph.dijkstraShortestPath(v->getInfo());
+        } else {
+            graph.floydWarshallShortestPath();
+        }
+}
+
+
 unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph){
     unordered_map<VertexPair, double> table;
     unsigned int i;
@@ -285,10 +314,10 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
 
     for(auto v : accessNodes)
         if(i == 0) {
-            graph.dijkstraTable(accessNodes,table, v->getInfo());
+            graph.dijkstraShortestPath(v->getInfo());
     }
     else {
-        graph.floydWarshallTable(accessNodes,table);
+        graph.floydWarshallShortestPath();
     }
 
     return table;

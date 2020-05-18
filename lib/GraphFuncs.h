@@ -95,5 +95,16 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph);
 
 void proccessService(Service &service, Graph<Node> graph);
 
+/**
+ * Função que pergunta qual o algoritmo a usar, e aplica-o;
+ *
+ * @param accessNodes conexo a processar
+ * @param graph grafo a processar
+ *
+ * @return nothing.
+ */
+
+void calculatePath(vector<Vertex<Node> *> accessNodes, Graph<Node> graph);
+
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

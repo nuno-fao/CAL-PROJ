@@ -35,7 +35,7 @@ int main() {
                 }
                 cout<<"Done!\n\n";
                 cout<<"Generating table...\n";
-                table = makeTable(conexo,graph);
+                calculatePath(conexo, graph);
                 cout<<"Done!\n";
                 break;
             case 1:
@@ -57,7 +57,7 @@ int main() {
                 proccessService(servico,graph);
                 cout<<"Done!\n";
                 cout<<"Displaying service...\n";
-                displayService(servico);
+                //displayService(servico);
                 break;
         }
     }

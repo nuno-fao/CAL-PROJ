@@ -23,3 +23,5 @@ void Vehicle::setPRordenados(const vector<Edge<Node>*> & pRordenados) {
 }
 
 Vehicle::Vehicle(int id, const vector<Edge<Node>*> & pRordenados) : id(id), PRordenados(pRordenados) {}
+
+Vehicle::Vehicle(int id) : id(id) {}

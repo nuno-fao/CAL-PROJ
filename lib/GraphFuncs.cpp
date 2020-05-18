@@ -140,7 +140,9 @@ vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph,string city){
     }
     getline(cityFile,aux);
     Vertex<Node>* garage=graph.findVertex(Node(stoi(aux)));
-    garage->getInfo().setType(Type::GARAGEM);
+    Node newInfo = garage->getInfo();
+    newInfo.setType(Type::GARAGEM);
+    garage->setInfo(newInfo);
     return cleanEdgesNVertex(graph,garage);
 }
 
@@ -228,11 +230,11 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     for (auto i: graph) {
         if (i->getInfo().getId() == idFactory && i->getInfo().getType()!=Type::GARAGEM) {
             i->getInfo().setType(Type::FACTORY);
-            factory=i;
+            factory = i;
             foundFac=true;
         }
         else if(i->getInfo().getType()==Type::GARAGEM){
-            garage=i;
+            garage = i;
             foundGarage=true;
         }
         if(foundGarage&&foundFac){break;}
@@ -313,7 +315,8 @@ vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph){
         return res;
 }
 
-void proccessService(Service service, Vehicle &vehicle, Graph<Node> graph){
+void proccessService(Service &service, Graph<Node> graph){
+    Vehicle vehicle(1);
     vehicle.setPRordenados(orderEdges(service, graph));
     service.setVehicle(vehicle);
 }

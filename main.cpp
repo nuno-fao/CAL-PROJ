@@ -53,7 +53,9 @@ int main() {
                 cout<<"Reading service...\n";
                 Service servico = readService(conexo,city);
                 cout<<"Done!\n";
-
+                cout<<"Calculating service...\n";
+                proccessService(servico,graph);
+                cout<<"Done!\n";
                 break;
         }
     }

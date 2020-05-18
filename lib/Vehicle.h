@@ -14,6 +14,8 @@ public:
 
     Vehicle(int id, const vector<Edge<Node>*> & pRordenados);
 
+    Vehicle(int id);
+
     int getId() const;
 
     void setId(int id);

@@ -88,13 +88,12 @@ vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph);
  * Função que atribui um caminho (edges) a um veiculo especifico, e esse veiculo a um serviço;
  *
  * @param service serviço a realizar
- * @param vehicle veiculo a atribuir ao serviço
  * @param graph grafo a processar
  *
  * @return nothing.
  */
 
-void proccessService(Service service, Vehicle &vehicle, Graph<Node> graph);
+void proccessService(Service &service, Graph<Node> graph);
 
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

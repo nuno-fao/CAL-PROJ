@@ -82,7 +82,7 @@ unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, 
  *
  * @return Vetor com as edges a percorrer, ordenadas.
  */
-vector<Edge<Node> *> orderEdges(Service service, Graph<Node> graph);
+vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph);
 
 /**
  * Função que atribui um caminho (edges) a um veiculo especifico, e esse veiculo a um serviço;

@@ -9,11 +9,11 @@
 
 int main() {
 	Graph<Node> graph;
-    GraphViewer* gv;
     vector<Vertex<Node>*> conexo;
     unordered_map<VertexPair, double> table;
     int aux;
     string city;
+    bool canDisplay=false;
 
 	int option;
     cout << "HELLO, WHAT DO YOU WANT TO DO?" << endl << endl;
@@ -33,16 +33,22 @@ int main() {
                     cout<<"failed to create CFC\n";
                     break;
                 }
+                canDisplay=true;
                 cout<<"Done!\n\n";
-                cout<<"Generating table...\n";
-                calculatePath(conexo, graph);
-                cout<<"Done!\n";
                 break;
             case 1:
+                if(!canDisplay){
+                    cout<<"You must first load a graph\n";
+                    break;
+                }
                 cout<<"Displaying full graph!\n";
                 displayGraph(graph);
                 break;
             case 2:
+                if(!canDisplay){
+                    cout<<"You must first load a graph\n";
+                    break;
+                }
                 cout<<"Displaying accessible nodes!\n";
                 displayGraphConexo(conexo);
                 break;
@@ -50,6 +56,10 @@ int main() {
                 help(conexo);
                 break;
             case 4:
+                if(!canDisplay){
+                    cout<<"You must first load a graph\n";
+                    break;
+                }
                 cout<<"Reading service...\n";
                 Service servico = readService(conexo,city);
                 cout<<"Done!\n";

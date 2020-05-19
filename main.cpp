@@ -10,7 +10,6 @@
 int main() {
 	Graph<Node> graph;
     vector<Vertex<Node>*> conexo;
-    unordered_map<VertexPair, double> table;
     int aux;
     string city;
     bool canDisplay=false;

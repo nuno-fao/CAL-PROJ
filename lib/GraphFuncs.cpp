@@ -296,67 +296,6 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     return service;
 }
 
-void calculatePath(vector<Vertex<Node> *> accessNodes, Graph<Node> graph) {
-    unsigned int i;
-    do {
-
-        cout << "What algorithm should be used?" << endl;
-        cout << "0 -> Dijkstra" << endl;
-        cout << "1 -> Floyd-Warshall" << endl;
-        cout
-                << "Pro Tip: If the number of edges is about the same as the number of vertex, Dijkstra is recommended but there are way more edges than vertex, Floyd-Warshall is"
-                << endl;
-        cout << "Option: ";
-        cin >> i;
-
-        if (i > 1)
-            cout << endl << endl << "Invalid option! Try again." << endl << endl;
-
-    } while (i > 1);
-
-    cout << "\n Working, this may take a while depending on CFC size.\n";
-
-    for (auto v : accessNodes)
-        if (i == 0) {
-            graph.dijkstraShortestPath(v->getInfo());
-        } else {
-            graph.floydWarshallShortestPath();
-        }
-}
-
-
-unordered_map<VertexPair, double> makeTable(vector<Vertex<Node> *> accessNodes, Graph<Node> graph){
-    unordered_map<VertexPair, double> table;
-    unsigned int i;
-    do {
-
-        cout << "What algorithm should be used?" << endl;
-        cout << "0 -> Dijkstra" << endl;
-        cout << "1 -> Floyd-Warshall" << endl;
-        cout << "Pro Tip: If the number of edges is about the same as the number of vertex, Dijkstra is recommended but there are way more edges than vertex, Floyd-Warshall is" << endl;
-        cout << "Option: ";
-        cin >> i;
-
-
-
-        if(i > 1)
-            cout << endl << endl << "Invalid option! Try again." << endl << endl;
-
-    } while(i > 1);
-
-    cout << "\n Working, this may take a while depending on CFC size.\n";
-
-    for(auto v : accessNodes)
-        if(i == 0) {
-            graph.dijkstraShortestPath(v->getInfo());
-    }
-    else {
-        graph.floydWarshallShortestPath();
-    }
-
-    return table;
-
-}
 
 vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     vector<Edge<Node>> res;
@@ -372,10 +311,43 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     }
     vpontos.insert(vpontos.begin(), service.getGaragem());
     vpontos.push_back(service.getDestino());
-    for (int i = 0; i < vpontos.size() - 1; i++) {
-        for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
-    }
 
+    unsigned int i;
+    do {
+
+        cout << "What algorithm should be used?" << endl;
+        cout << "0 -> Dijkstra's Shortest Path" << endl;
+        cout << "1 -> Unweighted Shortest Path" << endl;
+        /*cout
+                << "Pro Tip: If the number of edges is about the same as the number of vertex, Dijkstra is recommended but there are way more edges than vertex, Floyd-Warshall is"
+                << endl;*/
+        cout << "Option: ";
+        cin >> i;
+
+        if (i > 1)
+            cout << endl << endl << "Invalid option! Try again." << endl << endl;
+
+    } while (i > 1);
+
+    cout << "\n Working, this may take a while depending on CFC size.\n";
+
+    if (i == 0) {
+        for (int i = 0; i < vpontos.size() - 1; i++) {
+            for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
+        }
+    }
+    else {
+
+        for (int i = 0; i < vpontos.size() - 1; i++) {
+            graph.unweightedShortestPath(vpontos[i]->getInfo());
+            for (auto i: graph.getPathTo(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
+        }
+        /*
+        graph.floydWarshallShortestPath();
+        for (int i = 0; i < vpontos.size() - 1; i++) {
+            for (auto i: graph.getfloydWarshallPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
+    }*/
+    }
     vector<Vertex<Node> *> temp;
     for (auto i: path){
         for (auto j: graph.getVertexSet()){
@@ -391,6 +363,13 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
             }
         }
     }
+    /*int total = 0;
+    for (auto i: res) {
+        cout << i.getDest()->getInfo().getId() << " - " << i.getWeight() << endl;
+        total += i.getWeight();
+    }
+    cout << total << endl;
+    cout << res.size() << endl;*/
     return res;
 }
 

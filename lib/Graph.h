@@ -131,43 +131,6 @@ Edge<T>::Edge(Vertex<T> *d, double w): dest(d), weight(w) {}
 template<class T>
 Edge<T>::Edge(Vertex<T> *d, double w, bool disp): dest(d), weight(w), displayGV(disp) {}
 
-/****************** VertexPair *************************/
-struct VertexPair {
-
-    Vertex<Node>* first;
-    Vertex<Node>* second;
-
-    VertexPair(Vertex<Node>* first, Vertex<Node>* second) {
-        this->first = first;
-        this->second = second;
-    }
-    bool operator==(const VertexPair &other) const {
-        return ((first == other.first)
-                && (second == other.second));
-    }
-};
-
-namespace std {
-
-    template<>
-    struct hash<Vertex<Node> > {
-        size_t operator()(Vertex<Node>*& n) const {
-
-            return ((hash<double>()(n->getInfo().getXCoord())
-                     ^ (hash<double>()(n->getInfo().getYCoord()) << 1)) >> 1)
-                   ^ (hash<int>()(n->getInfo().getId()) << 1);
-        }
-    };
-    template<>
-    struct hash<VertexPair> {
-
-        size_t operator()(const VertexPair &k) const {
-
-            return ((hash<Vertex<Node>*>()(k.first))
-                    ^ (hash<Vertex<Node>*>()(k.second)) << 1);
-        }
-    };
-}
 
 /*************************** Graph  **************************/
 
@@ -176,6 +139,7 @@ class Graph {
 	vector<Vertex<T> *> vertexSet;    // vertex set
     double ** W = nullptr; // distance
     int **P = nullptr; // path
+    int findVertexIdx(const T &in) const;
 
 public:
 	Vertex<T> *findVertex(const T &in) const;
@@ -184,6 +148,8 @@ public:
 	bool addEdge(const T &sourc, const T &dest, double w, bool disp);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+    vector<vector<double>> dist; //weights
+    vector<vector<int>> next; //to reconstruct the path after running the algorithm
 
 	//Search
 	void DepthFirstSearch(Vertex<T> *v, vector<Vertex<T>* > & accessible) const;
@@ -192,14 +158,17 @@ public:
 	void unweightedShortestPath(const T &orig);
 	void dijkstraShortestPath(const T &orig);
 	void bellmanFordShortestPath(const T &orig);
-	void dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table, const T &source);
-	void floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table);
-	vector<T> getPathTo(const T &dest) const;
+	vector<T> getPathTo(const T &origin, const T &dest) const;
     vector<T> getPath(const T &origin, const T &dest);
+    ~Graph();
+
 
 	// Fp05 - all pairs
+    double edgeCost(int i, int j);
+    int vertexPrev(int i, int j);
 	void floydWarshallShortestPath();
 	vector<T> getfloydWarshallPath(const T &origin, const T &dest) const;
+
 
 };
 
@@ -354,7 +323,7 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
 
 
 template<class T>
-vector<T> Graph<T>::getPathTo(const T &dest) const{
+vector<T> Graph<T>::getPathTo(const T &origin, const T &dest) const{
     vector<T> res;
     auto v = findVertex(dest);
     if(v == nullptr || v->dist == INF)
@@ -389,24 +358,60 @@ vector<T> Graph<T>::getPath(const T &origin, const T &dest) {
 }
 
 
+template<class T>
+double Graph<T>::edgeCost(int i, int j) {
+    if (i == j)
+        return 0;
+
+    for (auto edge : vertexSet[i]->adj)
+        if (edge.dest == vertexSet[j])
+            return edge.weight;
+
+    return INF;
+}
+template<class T>
+int Graph<T>::vertexPrev(int i, int j) {
+    for (auto edge : vertexSet[i]->adj) {
+        if (edge.dest == vertexSet[j])
+            return j;
+    }
+
+    return -1;
+}
+
+template <class T>
+int Graph<T>::findVertexIdx(const T &in) const {
+    for (unsigned i = 0; i < vertexSet.size(); i++)
+        if (vertexSet[i]->info == in)
+            return i;
+    return -1;
+}
+
+template <class T>
+void deleteMatrix(T **m, int n) {
+    if (m != nullptr) {
+        for (int i = 0; i < n; i++)
+            if (m[i] != nullptr)
+                delete [] m[i];
+        delete [] m;
+    }
+}
+
+template <class T>
+Graph<T>::~Graph() {
+    deleteMatrix(W, vertexSet.size());
+    deleteMatrix(P, vertexSet.size());
+}
+
+
 
 /**************** All Pairs Shortest Path  ***************/
 
 template<class T>
 void Graph<T>::floydWarshallShortestPath() {
     unsigned n = vertexSet.size();
-    if (W != nullptr) {
-        for (int i = 0; i < n; i++)
-            if (W[i] != nullptr)
-                delete [] W[i];
-        delete [] W;
-    }
-    if (P != nullptr) {
-        for (int i = 0; i < n; i++)
-            if (P[i] != nullptr)
-                delete [] P[i];
-        delete [] P;
-    }
+    deleteMatrix(W, n);
+    deleteMatrix(P, n);
     W = new double *[n];
     P = new int *[n];
     for (unsigned i = 0; i < n; i++) {
@@ -417,116 +422,39 @@ void Graph<T>::floydWarshallShortestPath() {
             P[i][j] = -1;
         }
         for (auto e : vertexSet[i]->adj) {
-            for (unsigned i = 0; i < vertexSet.size(); i++)
-                if (vertexSet[i]->info == e.dest->info) {
-                    int j = i;
-                    W[i][j] = e.weight;
-                    P[i][j] = i;
-                }
-
+            int j = findVertexIdx(e.dest->info);
+            W[i][j] = e.weight;
+            P[i][j] = i;
         }
     }
-    for(unsigned k = 0; k < n ; k++)
+    for(unsigned k = 0; k < n; k++)
         for(unsigned i = 0; i < n; i++)
-            for(unsigned j = 0; j < n; j++){
+            for(unsigned j = 0; j < n; j++) {
                 if(W[i][k] == INF || W[k][j] == INF)
-                    continue;
+                    continue; // avoid overflow
                 int val = W[i][k] + W[k][j];
-                if(val < W[i][j]){
+                if (val < W[i][j]) {
                     W[i][j] = val;
                     P[i][j] = P[k][j];
-
                 }
             }
-
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            cout << P[i][j] << " ";
-            if(j == n - 1)
-                cout << endl;
-        }
-    }
 }
+
+
 
 template<class T>
 vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
-	vector<T> res;
-	unsigned i = 0;
-	unsigned j = 0;
-    for (unsigned k = 0; k < vertexSet.size(); k++)
-        if (vertexSet[k]->info == orig)
-            i = k;
-    for (unsigned l = 0; l < vertexSet.size(); l++)
-        if (vertexSet[l]->info == dest)
-            j = l;
-    if (i == -1 || j == -1 || W[i][j] == INF) return res;
+    vector<T> res;
+    int i = findVertexIdx(orig);
+    int j = findVertexIdx(dest);
+    if (i == -1 || j == -1 || W[i][j] == INF) // missing or disconnected
+        return res;
     for ( ; j != -1; j = P[i][j])
         res.push_back(vertexSet[j]->info);
     reverse(res.begin(), res.end());
     return res;
 }
 
-template<class T>
-void Graph<T>::dijkstraTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table, const T &source) {
-        MutablePriorityQueue<Vertex<T> > q;
-        for (auto v : accessNodes) {
-            v->dist = INF;
-            v->path = nullptr;
-        }
-        auto s = findVertex(source);
-        s->dist = 0;
-        q.insert(s);
-        while (!q.empty()) {
-            auto v = q.extractMin();
-
-            if (v != s) {
-                table.insert(make_pair(VertexPair(s, v), v->getDist()));
-            }
-            for (auto e : v->adj) {
-                auto oldDist = e.dest->dist;
-                if (v->dist + e.weight < e.dest->dist) {
-                    e.dest->dist = v->dist + e.weight;
-                    e.dest->path = v;
-                    if (oldDist == INF)
-                        q.insert(e.dest);
-                }
-
-            }
-        }
-    }
-
-
-
-
-template<class T>
-void Graph<T>::floydWarshallTable(vector<Vertex<T>* > accessNodes, unordered_map<VertexPair, double>& table) {
-    for (auto i : accessNodes) {
-        for (auto j : accessNodes) {
-            double value;
-            if (i == j)
-                value = 0;
-            else value = INF;
-
-            table.insert(make_pair(VertexPair(i, j), value));
-        }
-        for (auto e : i->getAdj()) {
-            table[VertexPair(i, e.getDest())] = e.getWeight();
-        }
-    }
-
-    for (auto k : accessNodes) {
-        for (auto j : accessNodes) {
-            if (k != j) {
-                for (auto i : accessNodes) {
-                    if (table.at(VertexPair(i, k)) == INF || table.at(VertexPair(k, j)) == INF) continue;
-                    double val = table.at(VertexPair(i, k)) + table.at(VertexPair(k, j));
-                    if (val < table.at(VertexPair(i, j)))
-                        table[VertexPair(i, j)] = val;
-                }
-            }
-        }
-    }
-}
 
 
 

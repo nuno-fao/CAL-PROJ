@@ -38,7 +38,7 @@ int main() {
                 break;
             case 1:
                 if(!canDisplay){
-                    cout<<"You must first load a graph\n";
+                    cout<<"You must first load a graph!\n";
                     break;
                 }
                 cout<<"Displaying full graph!\n";
@@ -46,28 +46,32 @@ int main() {
                 break;
             case 2:
                 if(!canDisplay){
-                    cout<<"You must first load a graph\n";
+                    cout<<"You must first load a graph!\n";
                     break;
                 }
                 cout<<"Displaying accessible nodes!\n";
                 displayGraphConexo(conexo);
                 break;
             case 3:
+                if(!canDisplay){
+                    cout<<"You must first load a graph!\n";
+                    break;
+                }
                 help(conexo);
                 break;
             case 4:
                 if(!canDisplay){
-                    cout<<"You must first load a graph\n";
+                    cout<<"You must first load a graph!\n";
                     break;
                 }
                 cout<<"Reading service...\n";
                 Service servico = readService(conexo,city);
                 cout<<"Done!\n";
-                cout<<"Calculating service...\n";
+                cout<<"Calculating path...\n";
                 proccessService(servico,graph);
                 cout<<"Done!\n";
-                cout<<"Displaying service...\n";
-                //displayService(servico);
+                cout<<"Displaying service!\n";
+                displayService(servico);
                 break;
         }
     }

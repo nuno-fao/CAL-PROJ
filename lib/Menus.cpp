@@ -11,7 +11,7 @@ int mainMenu(){
 
     do {
         cout << endl;
-        cout << "[0] Load a graph and generate its table and accessible nodes (VERY IMPORTANT TO DO THIS BEFORE ANYTHING ELSE!!!)" << endl;
+        cout << "[0] Load a graph and and generate CFC after reading its info .txt file (DO THIS BEFORE ANYTHING ELSE!!!)" << endl;
         cout << "[1] Display full graph" << endl;
         cout << "[2] Display accesible nodes from the garage" << endl;
         cout << "[3] Explain how to generate a service and list accesible nodes from the garage (in case you need help)" << endl;

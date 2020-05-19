@@ -143,6 +143,40 @@ vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph,string city){
     Node newInfo = garage->getInfo();
     newInfo.setType(Type::GARAGEM);
     garage->setInfo(newInfo);
+
+    getline(cityFile,aux);  // clear separator
+
+    while(getline(cityFile,aux)){
+        size_t pos = aux.find(')');
+        if (pos != string::npos)
+            aux = aux.substr(1, pos);
+
+
+        aux.erase(remove(aux.begin(), aux.end(), ','), aux.end());  //removes ','
+
+        int id1, id2;
+        stringstream lineS(aux);
+        lineS >> id1 >> id2;
+
+        Vertex<Node>* v1 = graph.findVertex(Node(id1)); //search source vertex
+        Vertex<Node>* v2 = graph.findVertex(Node(id2)); //search dest vertex
+        //remove edge from 1 vertex
+        for(int i=0;i<v1->getAdj().size();i++){
+            if(v1->getAdj().at(i).getDest()==v2){
+                v1->removeEdge(i);
+                break;
+            }
+        }
+
+        //remove edge from the other vertex
+        for(int i=0;i<v2->getAdj().size();i++){
+            if(v2->getAdj().at(i).getDest()==v1){
+                v2->removeEdge(i);
+                break;
+            }
+        }
+
+    }
     return cleanEdgesNVertex(graph,garage);
 }
 

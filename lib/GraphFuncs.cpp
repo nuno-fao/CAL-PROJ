@@ -354,7 +354,6 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         for (int i = 0; i < vpontos.size() - 1; i++) {
             for (auto i: graph.getfloydWarshallPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
     }*/
-        graph.bellmanFordShortestPath(service.getGaragem()->getInfo());
         for (auto j: graph.getVertexSet()) {
             for (auto i: pontosrecolha){
                 if (i == j) vpontos.push_back(j);
@@ -362,7 +361,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         }
         vpontos.insert(vpontos.begin(), service.getGaragem());
         vpontos.push_back(service.getDestino());
-
+        graph.bellmanFordShortestPath(service.getGaragem()->getInfo());
         for (int i = 0; i < vpontos.size() - 1; i++) {
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
         }
@@ -383,7 +382,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
             }
         }
     }
-    cout << res.size();
+
     return res;
 }
 

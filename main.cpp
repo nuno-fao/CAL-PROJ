@@ -15,7 +15,7 @@ int main() {
     bool canDisplay=false;
 
 	int option;
-    cout << "HELLO, WHAT DO YOU WANT TO DO?" << endl << endl;
+    cout << "HELLO, WHAT DO YOU WANT TO DO?" <<  endl;
     while ((option=mainMenu())!=5){
         switch(option){
             case 0:

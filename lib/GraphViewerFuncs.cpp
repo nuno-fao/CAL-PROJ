@@ -36,9 +36,6 @@ GraphViewer* displayGraph( Graph<Node>& graph){
         auxY = h - auxY;
 
         gv->addNode(i->getInfo().getId(), (int)auxX, (int)auxY);
-        if(i->getInfo().getType()==Type::GARAGEM){
-            gv->setVertexColor(i->getInfo().getId(),"BLUE");
-        }
     }
 
 

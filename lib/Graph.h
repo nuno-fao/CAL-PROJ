@@ -150,6 +150,7 @@ public:
 	bool addEdge(const T &sourc, const T &dest, double w, bool disp);
 	int getNumVertex() const;
 	vector<Vertex<T> *> getVertexSet() const;
+	void setVertexSet(vector<Vertex<T> *> newSet);
 
 	//Search
 	void DepthFirstSearch(Vertex<T> *v, vector<Vertex<T>* > & accessible) const;
@@ -194,6 +195,12 @@ template <class T>
 vector<Vertex<T> *> Graph<T>::getVertexSet() const {
 	return vertexSet;
 }
+
+template<class T>
+void Graph<T>::setVertexSet(vector<Vertex<T> *> newSet){
+    this->vertexSet=newSet;
+}
+
 
 /*
  * Auxiliary function to find a vertex with a given content.
@@ -424,6 +431,5 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
     reverse(res.begin(), res.end());
     return res;
 }
-
 
 #endif /* GRAPH_H_ */

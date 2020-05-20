@@ -32,7 +32,7 @@ int chooseCity(string& city){
     unsigned int i;
 
     do {
-        cout << "Please select the desired map:" << endl;
+        cout << "Please select the map which you want to load:" << endl;
         cout << "[0] Aveiro" << endl;
         cout << "[1] Braga" << endl;
         cout << "[2] Coimbra" << endl;
@@ -43,7 +43,7 @@ int chooseCity(string& city){
         cout << "[7] Maia" << endl;
         cout << "[8] Porto" << endl;
         cout << "[9] Viseu" << endl;
-        cout << "[10] Cancelar..." << endl;
+        cout << "[10] Cancel..." << endl;
 
         cin >> i;
         cout << endl;

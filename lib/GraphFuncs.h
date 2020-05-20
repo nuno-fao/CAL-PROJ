@@ -83,7 +83,27 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph);
 
 void proccessService(Service &service, Graph<Node> graph);
 
+/**
+ * Função para usar com o std::sort para ordenar o vetor de nodes;
+ *
+ * @param a vertex à esquerda
+ * @param d vertex à direita
+ *
+ * @return true se a menor que d, false se o contrário.
+ */
+bool sortById(const Vertex<Node>* a,const Vertex<Node>* d);
 
+/**
+ * Função que faz pesquisa binária num vertexSet um vertex que contenha uma Node igual à target. ;
+ *
+ * @param vertexSet vetor a percorrer
+ * @param target o que queremos encontrar
+ * @param indInicio extremo esquerdo da procura no vetor
+ * @param indFim extremo direito da procura no vetor
+ *
+ * @return apontador para o vertex deseja se encontrar, senão retorna nullptr.
+ */
+Vertex<Node>* vertexBinarySearch(vector<Vertex<Node>*> vertexSet, const Node &target, int indInicio, int indFim);
 
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

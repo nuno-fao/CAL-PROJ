@@ -70,6 +70,9 @@ Graph<Node> loadGraph( string city){
         cout << "Read wrong number of vertex! ";
         return graph;
     }
+    vector<Vertex<Node>*> copy = graph.getVertexSet();
+    sort(copy.begin(),copy.end(),sortById);
+    graph.setVertexSet(copy);
 
 
 
@@ -96,8 +99,13 @@ Graph<Node> loadGraph( string city){
         stringstream lineS(line);
         lineS >> id1 >> id2;
 
-        Vertex<Node>* v1 = graph.findVertex(Node(id1)); //search source vertex
-        Vertex<Node>* v2 = graph.findVertex(Node(id2)); //search dest vertex
+        Vertex<Node>* v1 = vertexBinarySearch(graph.getVertexSet(),Node(id1),0,graph.getVertexSet().size()); //search source vertex
+        Vertex<Node>* v2 = vertexBinarySearch(graph.getVertexSet(),Node(id2),0,graph.getVertexSet().size()); //search dest vertex
+
+        if(v1== nullptr|| v2== nullptr){
+            cout<<"Failed to find vertex "<<id1<<" or vertex "<<id2<<" !!!";
+            return graph;
+        }
 
         distance = getEdgeWeight(v1->getInfo().getXCoord(), v1->getInfo().getYCoord(), v2->getInfo().getXCoord(), v2->getInfo().getYCoord());
 
@@ -139,7 +147,7 @@ vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph,string city){
         return outIfFail;
     }
     getline(cityFile,aux);
-    Vertex<Node>* garage=graph.findVertex(Node(stoi(aux)));
+    Vertex<Node>* garage=vertexBinarySearch(graph.getVertexSet(),Node(stoi(aux)),0,graph.getVertexSet().size());
     Node newInfo = garage->getInfo();
     newInfo.setType(Type::GARAGEM);
     garage->setInfo(newInfo);
@@ -158,8 +166,13 @@ vector<Vertex<Node>*> readFromCityFile(Graph<Node> &graph,string city){
         stringstream lineS(aux);
         lineS >> id1 >> id2;
 
-        Vertex<Node>* v1 = graph.findVertex(Node(id1)); //search source vertex
-        Vertex<Node>* v2 = graph.findVertex(Node(id2)); //search dest vertex
+        Vertex<Node>* v1 = vertexBinarySearch(graph.getVertexSet(),Node(id1),0,graph.getVertexSet().size()); //search source vertex
+        Vertex<Node>* v2 = vertexBinarySearch(graph.getVertexSet(),Node(id2),0,graph.getVertexSet().size()); //search dest vertex
+
+        if(v1== nullptr|| v2== nullptr){
+            cout<<"Failed to find vertex "<<id1<<" or vertex "<<id2<<" while making CFC!!!";
+            return outIfFail;
+        }
         //remove edge from 1 vertex
         for(int i=0;i<v1->getAdj().size();i++){
             if(v1->getAdj().at(i).getDest()==v2){
@@ -205,8 +218,6 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     ifstream serviceFile;
     vector<int> notFound;
     vector<Vertex<Node>*> pRecolha;
-    Vertex<Node>* garage;
-    Vertex<Node>* factory;
 
     int id, total = 0;
     bool found = false;
@@ -258,21 +269,14 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     }
 
     //------------------SET FACTORY & GARAGE------------------
-    bool foundGarage, foundFac;
-    foundGarage=foundFac=false;
+    Vertex<Node>* factory = vertexBinarySearch(graph,Node(idFactory),0,graph.size()); //search source vertex
+    Vertex<Node>* garage; //search dest vertex
+
     for (auto i: graph) {
-        if (i->getInfo().getId() == idFactory && i->getInfo().getType()!=Type::GARAGEM) {
-            Node node = i->getInfo();
-            node.setType(Type::FACTORY);
-            i->setInfo(node);
-            factory = i;
-            foundFac=true;
-        }
-        else if(i->getInfo().getType()==Type::GARAGEM){
+        if(i->getInfo().getType()==Type::GARAGEM){
             garage = i;
-            foundGarage=true;
+            break;
         }
-        if(foundGarage&&foundFac){break;}
     }
 
 
@@ -386,4 +390,24 @@ void proccessService(Service &service, Graph<Node> graph){
     service.setVehicle(vehicle);
 }
 
+bool sortById(const Vertex<Node>* a,const Vertex<Node>* d){
+    return a->getInfo().getId()<d->getInfo().getId();
+}
+
+Vertex<Node>* vertexBinarySearch(vector<Vertex<Node>*> vertexSet, const Node &target, int indInicio, int indFim){
+    while(indInicio<=indFim){
+        int mid = indInicio+(indFim-indInicio)/2;
+
+        if(vertexSet.at(mid)->getInfo().getId()==target.getId()){
+            return vertexSet.at(mid);
+        }
+        if(vertexSet.at(mid)->getInfo().getId()<target.getId()){
+            indInicio=mid+1;
+        }
+        else{
+            indFim=mid-1;
+        }
+    }
+    return nullptr;
+}
 

@@ -36,10 +36,10 @@ public:
     void setVehicle(const Vehicle &vehicle);
 
 private:
-    int id;
-    Vertex<Node>* garagem;
-    Vertex<Node>* destino;
-    vector<Vertex<Node>*> pontosRecolha;
-    Vehicle vehicle;
+    int id; // ID do veículo
+    Vertex<Node>* garagem; // vértice da garagem
+    Vertex<Node>* destino; // vértice da empresa
+    vector<Vertex<Node>*> pontosRecolha;    //vetor dos pontos de recolha
+    Vehicle vehicle;    // veículo atribuido;
 };
 #endif //CAL_PROJ_SERVICE_H

@@ -190,12 +190,11 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
                 i--;
             }
         }
-    }
-    //----------------------REMOVE VERTEX NOT ACCESSIBLE FROM GARAGE---------------
-    for (auto v : graph.getVertexSet())
         v->setVisited(false);
-
+    }
+    //--------------------GET CFC----------------------------
     graph.DepthFirstSearch(garage, visitedVertex);
+
     return visitedVertex;
 }
 

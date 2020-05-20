@@ -208,6 +208,8 @@ vector<Vertex<Node>*> cleanEdgesNVertex(Graph<Node> graph, Vertex<Node>* garage)
     //--------------------GET CFC----------------------------
     graph.DepthFirstSearch(garage, visitedVertex);
 
+    sort(visitedVertex.begin(),visitedVertex.end(),sortById);
+
     return visitedVertex;
 }
 
@@ -269,13 +271,16 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     }
 
     //------------------SET FACTORY & GARAGE------------------
-    Vertex<Node>* factory = vertexBinarySearch(graph,Node(idFactory),0,graph.size()); //search source vertex
-    Vertex<Node>* garage; //search dest vertex
+    Vertex<Node>* factory = vertexBinarySearch(graph,Node(idFactory),0,graph.size());
+    Vertex<Node>* garage;
 
     for (auto i: graph) {
         if(i->getInfo().getType()==Type::GARAGEM){
             garage = i;
-            break;
+            //break;
+        }
+        if(i->getInfo().getId()==idFactory){
+            cout<<"Encontrei a factory";
         }
     }
 

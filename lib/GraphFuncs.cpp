@@ -328,7 +328,6 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     cout << "\n Working, this may take a while depending on CFC size.\n";
 
     if (n == 0) {
-        graph.dijkstraShortestPath(service.getGaragem()->getInfo());
         for (auto j: graph.getVertexSet()) {
             for (auto i: pontosrecolha){
                 if (i == j) vpontos.push_back(j);
@@ -338,6 +337,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         vpontos.push_back(service.getDestino());
 
         for (int i = 0; i < vpontos.size() - 1; i++) {
+            graph.dijkstraShortestPath(vpontos[i]->getInfo());
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) {
                 path.push_back(i);
             }
@@ -383,6 +383,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
             }
         }
     }
+    cout << res.size();
     return res;
 }
 

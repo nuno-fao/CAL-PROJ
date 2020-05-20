@@ -273,7 +273,9 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     //------------------SET FACTORY & GARAGE------------------
     Vertex<Node>* factory = vertexBinarySearch(graph,Node(idFactory),0,graph.size());
     Vertex<Node>* garage;
-
+    Node auxNode = factory->getInfo();
+    auxNode.setType(Type::FACTORY);
+    factory->setInfo(auxNode);
     for (auto i: graph) {
         if(i->getInfo().getType()==Type::GARAGEM){
             garage = i;

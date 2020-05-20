@@ -44,7 +44,7 @@ GraphViewer* displayGraph( Graph<Node>& graph){
     for(auto i : graph.getVertexSet()){
         for(auto j: i->getAdj()){
             if(j.displayEdge()) {
-                gv->addEdge(auxID, i->getInfo().getId(), j.getDest()->getInfo().getId(), EdgeType::UNDIRECTED);
+                gv->addEdge(auxID, i->getInfo().getId(), j.getDest()->getInfo().getId(), EdgeType::DIRECTED);
                 auxID++;
             }
         }

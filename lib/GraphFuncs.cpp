@@ -277,10 +277,7 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
     for (auto i: graph) {
         if(i->getInfo().getType()==Type::GARAGEM){
             garage = i;
-            //break;
-        }
-        if(i->getInfo().getId()==idFactory){
-            cout<<"Encontrei a factory";
+            break;
         }
     }
 

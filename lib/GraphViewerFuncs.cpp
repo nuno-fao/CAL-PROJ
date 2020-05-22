@@ -218,8 +218,9 @@ void displayService(Service service){
         auxY = ( i.getDest()->getInfo().getYCoord() - yMin ) * h / (yMax-yMin) ;
         auxY = h - auxY;
         gv->addNode(i.getDest()->getInfo().getId(),(int)auxX,(int)auxY);
-        gv->addEdge(auxID,origem->getInfo().getId(),i.getDest()->getInfo().getId(),EdgeType::UNDIRECTED);
+        gv->addEdge(auxID,origem->getInfo().getId(),i.getDest()->getInfo().getId(),EdgeType::DIRECTED);
         gv->setEdgeThickness(auxID,2);
+        gv->setEdgeLabel(auxID,to_string(auxID));
         origem=i.getDest();
         auxID++;
     }

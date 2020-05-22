@@ -66,6 +66,10 @@ int main() {
                 cout<<"Reading service...\n";
                 Service servico = readService(conexo,city);
                 cout<<"Done!\n";
+                if(servico.getPontosRecolha().empty()){
+                    cout<<"The service you provided has no pickup point accessible from our garage!\n";
+                    break;
+                }
                 cout<<"Calculating path...\n";
                 proccessService(servico,graph);
                 cout<<"Done!\n";

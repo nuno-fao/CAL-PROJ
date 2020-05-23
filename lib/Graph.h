@@ -312,22 +312,25 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
     }
     auto s = findVertex(orig);
     s->dist = 0;
-    for (unsigned i = 1; i < vertexSet.size(); i++)
-        for (auto v: vertexSet)
+    for (unsigned i = 1; i < vertexSet.size(); i++) {
+        for (auto v: vertexSet) {
             for (auto e: v->adj) {
                 if (v->dist + e.weight < e.dest->dist) {
                     e.dest->dist = v->dist + e.weight;
                     e.dest->path = v;
                 }
             }
-    for (auto v: vertexSet)
-        for (auto e: v->adj){
-            if (v->dist + e.weight < e.dest->dist) {
-                e.dest->dist = v->dist + e.weight;
-                e.dest->path = v;
-                cout << "Negative cycle!" << endl;
+            for (auto v: vertexSet) {
+                for (auto e: v->adj) {
+                    if (v->dist + e.weight < e.dest->dist) {
+                        e.dest->dist = v->dist + e.weight;
+                        e.dest->path = v;
+                        cout << "Negative cycle!" << endl;
+                    }
+                }
             }
         }
+    }
 }
 
 
@@ -424,8 +427,9 @@ vector<T> Graph<T>::getfloydWarshallPath(const T &orig, const T &dest) const{
     vector<T> res;
     int i = findVertexIdx(orig);
     int j = findVertexIdx(dest);
-    if (i == -1 || j == -1 || W[i][j] == INF) // missing or disconnected
+    if (i == -1 || j == -1 || W[i][j] == INF) { // missing or disconnected
         return res;
+    }
     for ( ; j != -1; j = P[i][j])
         res.push_back(vertexSet[j]->info);
     reverse(res.begin(), res.end());

@@ -70,7 +70,7 @@ Service readService(vector<Vertex<Node>*> graph, string city);
  *
  * @return Vetor com as edges a percorrer, ordenadas.
  */
-vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph);
+vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph, vector<Vertex<Node>*> conexo);
 
 /**
  * Função que atribui um caminho (edges) a um veiculo especifico, e esse veiculo a um serviço;
@@ -105,5 +105,8 @@ bool sortById(const Vertex<Node>* a,const Vertex<Node>* d);
  */
 Vertex<Node>* vertexBinarySearch(vector<Vertex<Node>*> vertexSet, const Node &target, int indInicio, int indFim);
 
+
+vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned int algoritmo);
+double pathCost(unsigned int algoritmo, Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino);
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

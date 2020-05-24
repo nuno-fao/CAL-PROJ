@@ -356,7 +356,6 @@ vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned in
 
 vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     vector<Edge<Node>> res;
-    vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
     vector<Node> path;
     vector<Vertex<Node> *> vpontos;
 
@@ -381,9 +380,10 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     cout << "\n Working, this may take a while depending on CFC size.\n";
 
     if (n == 0) {
-        graph.dijkstraShortestPath(service.getGaragem()->getInfo());
+
         vpontos = sortPoints(service, graph, n);
         for (int i = 0; i < vpontos.size() - 1; i++) {
+            graph.dijkstraShortestPath(vpontos[i]->getInfo());
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) {
                 path.push_back(i);
             }
@@ -404,9 +404,11 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
             for (auto j: graph.getfloydWarshallPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(j);
         }*/
 
-        graph.bellmanFordShortestPath(service.getGaragem()->getInfo());
+
         vpontos = sortPoints(service, graph, n);
+
         for (int i = 0; i < vpontos.size() - 1; i++) {
+            graph.bellmanFordShortestPath(vpontos[i]->getInfo());
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
         }
     }
@@ -417,10 +419,12 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         }
     }
 
-    for (int i = 1; i < temp.size(); i++) {
-        Vertex<Node> *prev = temp[i - 1];
-        for (auto j: prev->getAdj()) {
-            if (j.getDest() == temp[i]) {
+
+    for (int i = 0; i < temp.size() - 1; i++) {
+        Vertex<Node> *v1 = graph.findVertex(temp[i]->getInfo());
+        Vertex<Node> *v2 = graph.findVertex(temp[i + 1]->getInfo());
+        for (auto j: v1->getAdj()) {
+            if (j.getDest() == v2) {
                 res.push_back(j);
                 break;
             }

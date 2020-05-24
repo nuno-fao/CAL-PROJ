@@ -304,9 +304,8 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
 }
 
 
-double pathCost(unsigned int algoritmo, Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino){
+double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino){
     double cost = 0;
-    if (algoritmo == 0) graph.dijkstraShortestPath(origem->getInfo());
     vector<Node> path = graph.getPath(origem->getInfo(), destino->getInfo());
     for (int i = 0; i < graph.getPath(origem->getInfo(), destino->getInfo()).size() - 1; i++) {
         Vertex<Node> *v1 = graph.findVertex(path[i]);
@@ -321,7 +320,7 @@ double pathCost(unsigned int algoritmo, Graph<Node> graph, Vertex<Node> * origem
     return cost;
 }
 
-vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned int algoritmo){
+vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph){
     vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
     vector<Vertex<Node> *> sortedpoints;
     sortedpoints.push_back(service.getGaragem());
@@ -336,7 +335,7 @@ vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned in
         for (auto i: pontosrecolha) {
             if (find(visited.begin(), visited.end(), i) != visited.end()) continue;
             else {
-                pathcost = pathCost(algoritmo, graph, last, i);
+                pathcost = pathCost(graph, last, i);
                 if (pathcost < cost) {
                     cost = pathcost;
                     next = i;
@@ -380,9 +379,9 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
     cout << "\n Working, this may take a while depending on CFC size.\n";
 
     if (n == 0) {
-        vpontos = sortPoints(service, graph, n);
+        graph.dijkstraShortestPath(service.getGaragem()->getInfo());
+        vpontos = sortPoints(service, graph);
         for (int i = 0; i < vpontos.size() - 1; i++) {
-            graph.dijkstraShortestPath(vpontos[i]->getInfo());
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) {
                 path.push_back(i);
             }
@@ -404,7 +403,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         }*/
 
         graph.bellmanFordShortestPath(service.getGaragem()->getInfo());
-        vpontos = sortPoints(service, graph, n);
+        vpontos = sortPoints(service, graph);
         for (int i = 0; i < vpontos.size() - 1; i++) {
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
         }

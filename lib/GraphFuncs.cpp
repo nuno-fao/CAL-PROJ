@@ -307,7 +307,6 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
 double pathCost(unsigned int algoritmo, Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino){
     double cost = 0;
     if (algoritmo == 0) graph.dijkstraShortestPath(origem->getInfo());
-    else graph.bellmanFordShortestPath(origem->getInfo());
     vector<Node> path = graph.getPath(origem->getInfo(), destino->getInfo());
     for (int i = 0; i < graph.getPath(origem->getInfo(), destino->getInfo()).size() - 1; i++) {
         Vertex<Node> *v1 = graph.findVertex(path[i]);

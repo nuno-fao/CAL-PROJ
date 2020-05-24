@@ -304,8 +304,10 @@ Service readService(vector<Vertex<Node>*> graph, string city) {
 }
 
 
-double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino){
+double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino, unsigned int algoritmo){
     double cost = 0;
+    if (algoritmo == 0) graph.dijkstraShortestPath(origem->getInfo());
+    if (algoritmo == 1) graph.bellmanFordShortestPath(origem->getInfo());
     vector<Node> path = graph.getPath(origem->getInfo(), destino->getInfo());
     for (int i = 0; i < graph.getPath(origem->getInfo(), destino->getInfo()).size() - 1; i++) {
         Vertex<Node> *v1 = graph.findVertex(path[i]);
@@ -320,7 +322,7 @@ double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino
     return cost;
 }
 
-vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph){
+vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned int algoritmo){
     vector<Vertex<Node> *> pontosrecolha = service.getPontosRecolha();
     vector<Vertex<Node> *> sortedpoints;
     sortedpoints.push_back(service.getGaragem());
@@ -335,7 +337,7 @@ vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph){
         for (auto i: pontosrecolha) {
             if (find(visited.begin(), visited.end(), i) != visited.end()) continue;
             else {
-                pathcost = pathCost(graph, last, i);
+                pathcost = pathCost(graph, last, i, algoritmo);
                 if (pathcost < cost) {
                     cost = pathcost;
                     next = i;
@@ -380,7 +382,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
 
     if (n == 0) {
         graph.dijkstraShortestPath(service.getGaragem()->getInfo());
-        vpontos = sortPoints(service, graph);
+        vpontos = sortPoints(service, graph, n);
         for (int i = 0; i < vpontos.size() - 1; i++) {
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) {
                 path.push_back(i);
@@ -403,7 +405,7 @@ vector<Edge<Node>> orderEdges(Service service, Graph<Node> graph) {
         }*/
 
         graph.bellmanFordShortestPath(service.getGaragem()->getInfo());
-        vpontos = sortPoints(service, graph);
+        vpontos = sortPoints(service, graph, n);
         for (int i = 0; i < vpontos.size() - 1; i++) {
             for (auto i: graph.getPath(vpontos[i]->getInfo(), vpontos[i + 1]->getInfo())) path.push_back(i);
         }

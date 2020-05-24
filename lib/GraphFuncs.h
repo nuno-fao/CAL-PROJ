@@ -106,8 +106,8 @@ bool sortById(const Vertex<Node>* a,const Vertex<Node>* d);
 Vertex<Node>* vertexBinarySearch(vector<Vertex<Node>*> vertexSet, const Node &target, int indInicio, int indFim);
 
 
-vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph);
+vector<Vertex<Node> *>sortPoints(Service service, Graph<Node> graph, unsigned int algoritmo);
 
-double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino);
+double pathCost(Graph<Node> graph, Vertex<Node> * origem, Vertex<Node> * destino, unsigned int algoritmo);
 #endif //CAL_PROJ_GRAPHFUNCS_H
 

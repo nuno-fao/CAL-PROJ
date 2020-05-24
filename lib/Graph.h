@@ -277,6 +277,7 @@ void Graph<T>::unweightedShortestPath(const T &orig) {
 }
 
 
+
 template<class T>
 void Graph<T>::dijkstraShortestPath(const T &origin) {
     MutablePriorityQueue<Vertex<T> > q;
@@ -320,18 +321,19 @@ void Graph<T>::bellmanFordShortestPath(const T &orig) {
                     e.dest->path = v;
                 }
             }
-            for (auto v: vertexSet) {
-                for (auto e: v->adj) {
-                    if (v->dist + e.weight < e.dest->dist) {
-                        e.dest->dist = v->dist + e.weight;
-                        e.dest->path = v;
-                        cout << "Negative cycle!" << endl;
-                    }
-                }
+        }
+    }
+    for (auto v: vertexSet) {
+        for (auto e: v->adj) {
+            if (v->dist + e.weight < e.dest->dist) {
+                e.dest->dist = v->dist + e.weight;
+                e.dest->path = v;
+                //cout << "Negative cycle!" << endl;
             }
         }
     }
 }
+
 
 
 
